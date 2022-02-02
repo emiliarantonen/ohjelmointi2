@@ -16,7 +16,7 @@ public class RekisteriMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("Joukkue.fxml"));
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("Tuloste.fxml"));
             final Pane root = ldr.load();
             //final RekisteriGUIController rekisteriCtrl = (RekisteriGUIController) ldr.getController();
             Scene scene = new Scene(root);
