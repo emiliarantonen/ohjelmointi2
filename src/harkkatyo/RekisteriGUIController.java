@@ -24,14 +24,20 @@ import javafx.scene.layout.Pane;
  * @authhor emiliarantonen
  * @version 1.2.2022
  *
+ *Luokka käyttöliittymän tapahtumien hoitamiseksi
  */
 public class RekisteriGUIController implements Initializable{
 
-    
+    /**
+     * Uuden joukkueen lisääminen
+     */
     @FXML private void handleUusiJoukkue() {
         ModalController.showModal(RekisteriGUIController.class.getResource("LisaaKilpailu.fxml"), "Joukkue", null, "");
     }
     
+    /**
+     * Käsitellään joukkueen hakeminen
+     */
     @FXML private void handleHaeJoukkue() {
         //Dialogs.showMessageDialog("Ei osata vielä lisätä");
         ModalController.showModal(RekisteriGUIController.class.getResource("Joukkue.fxml"), "Joukkue", null, "");

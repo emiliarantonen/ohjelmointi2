@@ -14,6 +14,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * @author emiliarantonen
+ * @version 14.2.2022
+ *
+ *Luokka joukkuuen tietojen käyttöliittymän hoitamiseksi
+ */
 public class JoukkueController implements ModalControllerInterface<String>{
 
     @FXML
@@ -34,17 +40,28 @@ public class JoukkueController implements ModalControllerInterface<String>{
     @FXML
     private TableColumn<Joukkue, Integer> Vuosi;
     
-
+    /**
+     * 
+     * @param event
+     */
     @FXML
     void handleMuokkaa(ActionEvent event) {
         ModalController.showModal(JoukkueController.class.getResource("LisaaKilpailu.fxml"), "Joukkue", null, "");
     }
-
+    
+    /**
+     * 
+     * @param event -
+     */
     @FXML
-    void handleNayta(ActionEvent event) {
+    public void handleNayta(ActionEvent event) {
         alusta();
     }
-
+    
+    /**
+     * 
+     * @param event
+     */
     @FXML
     void handleTulosta(ActionEvent event) {
         Dialogs.showMessageDialog("Ei osata vielä tulostaa");
@@ -61,6 +78,9 @@ public class JoukkueController implements ModalControllerInterface<String>{
         //
     }
     
+    /**
+     * Alustaa joukkueen tiedot
+     */
     protected void alusta() {
         Kilpailu.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("kilpailu"));
         Vuosi.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("vuosi"));

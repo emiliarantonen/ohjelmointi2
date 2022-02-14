@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
  * @author emiliarantonen
  * @version 1.2.2022
  *
+ *Pääohjelma rekisterin käynnistämiseksi
  */
 public class RekisteriMain extends Application {
     @Override
@@ -31,7 +32,8 @@ public class RekisteriMain extends Application {
     }
 
     /**
-     * @param args Ei käytössä
+     * Käynnistetään käyttöliittymäs
+     * @param args komentorivin parametrit
      */
     public static void main(String[] args) {
         launch(args);
