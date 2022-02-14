@@ -16,10 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import harkkatyo.Joukkue;
+import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 
 /**
  * @author mineanupponen
- * @authhor emsukara
+ * @authhor emiliarantonen
  * @version 1.2.2022
  *
  */
@@ -27,44 +29,24 @@ public class RekisteriGUIController implements Initializable{
 
     
     @FXML private void handleUusiJoukkue() {
-        Dialogs.showMessageDialog("Ei osata vielä lisätä");
+        ModalController.showModal(RekisteriGUIController.class.getResource("LisaaKilpailu.fxml"), "Joukkue", null, "");
     }
     
     @FXML private void handleHaeJoukkue() {
-        Dialogs.showMessageDialog("Ei osata vielä lisätä");
+        //Dialogs.showMessageDialog("Ei osata vielä lisätä");
+        ModalController.showModal(RekisteriGUIController.class.getResource("Joukkue.fxml"), "Joukkue", null, "");
     }
     
-    @FXML
-    private TableView<Joukkue> Joukkue;
-
-    @FXML
-    private TableColumn<Joukkue, String> Kilpailu;
-
-    @FXML
-    private TableColumn<Joukkue, Double> Pisteet;
-
-    @FXML
-    private TableColumn<Joukkue, String> Sarja;
-
-    @FXML
-    private TableColumn<Joukkue, Integer> Sijoitus;
-
-    @FXML
-    private TableColumn<Joukkue, Integer> Vuosi;
     
-    ObservableList<Joukkue> list = FXCollections.observableArrayList(
-            new Joukkue("SM-kilpailut", 2017, "14-16v.", 17.65, 7)
-            );
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        Kilpailu.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("kilpailu"));
-        Vuosi.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("vuosi"));
-        Sarja.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("sarja"));
-        Pisteet.setCellValueFactory(new PropertyValueFactory<Joukkue, Double>("pisteet"));
-        Sijoitus.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("sijoitus"));
+        alusta();
+    }
+    
+    protected void alusta() {
+        //
         
-        Joukkue.setItems(list);
     }
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -8,9 +9,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="harkkatyo.RekisteriGUIController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="harkkatyo.JoukkueController">
    <left>
       <MenuButton mnemonicParsing="false" text="Lajittele" BorderPane.alignment="CENTER">
         <items>
@@ -25,7 +27,7 @@
             <Insets />
          </opaqueInsets>
          <BorderPane.margin>
-            <Insets bottom="345.0" />
+            <Insets bottom="320.0" />
          </BorderPane.margin>
       </MenuButton>
    </left>
@@ -52,4 +54,21 @@
         </columns>
       </TableView>
    </center>
+   <bottom>
+      <SplitPane dividerPositions="0.11789297658862877" prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleMuokkaa" text="Muokkaa" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta" />
+                  <Button layoutX="84.0" layoutY="-1.0" mnemonicParsing="false" onAction="#handleNayta" text="Näytä" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </bottom>
 </BorderPane>

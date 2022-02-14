@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="harkkatyo.LisaaKilpailuController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -110,7 +109,7 @@
       </GridPane>
    </center>
    <bottom>
-      <Button mnemonicParsing="false" text="Tallenna" BorderPane.alignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" />
          </BorderPane.margin>
