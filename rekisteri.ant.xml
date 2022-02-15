@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project harkkatyo">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="/Users/mineanupponen/kurssit/ohj2/ws"/>
+    <property name="dir.jarfile" value="${dir.buildfile}"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/rekisteri.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="harkkatyo.RekisteriMain"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${dir.jarfile}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Users/mineanupponen/kurssit/ohj2/devel/jar/Ali.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Users/mineanupponen/kurssit/ohj2/devel/jar/fxgui.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Users/mineanupponen/kurssit/ohj2/devel/jar/Graphics.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Users/mineanupponen/kurssit/ohj2/devel/jar/Music.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="/Users/mineanupponen/.p2/pool/plugins/org.eclipse.fx.ide.css.jfx8_3.7.0.202010120832.jar"/>
+        </jar>
+    </target>
+</project>

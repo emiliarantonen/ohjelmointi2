@@ -1,5 +1,9 @@
 package harkkatyo;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -58,6 +62,11 @@ public class JoukkueController implements ModalControllerInterface<String>{
         alusta();
     }
     
+    @FXML
+    public void handleHelp(ActionEvent event) {
+        apua();
+    }
+    
     /**
      * 
      * @param event
@@ -91,6 +100,20 @@ public class JoukkueController implements ModalControllerInterface<String>{
         Joukkue.setItems(list);
         
     }
+    
+    private void apua() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2022k/ht/mmnuppoz");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
+
+    }
+
 
     @Override
     public String getResult() {
