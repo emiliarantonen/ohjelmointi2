@@ -32,7 +32,7 @@ public class RekisteriGUIController implements Initializable{
      * Uuden joukkueen lisääminen
      */
     @FXML private void handleUusiJoukkue() {
-        ModalController.showModal(RekisteriGUIController.class.getResource("LisaaKilpailu.fxml"), "Joukkue", null, "");
+        ModalController.showModal(RekisteriGUIController.class.getResource("LisaaJoukkue.fxml"), "Lisää joukkue", null, "");
     }
     
     /**
@@ -43,6 +43,10 @@ public class RekisteriGUIController implements Initializable{
         ModalController.showModal(RekisteriGUIController.class.getResource("Joukkue.fxml"), "Joukkue", null, "");
     }
     
+    @FXML private void handleNaytaJoukkueet() {
+        //Dialogs.showMessageDialog("Ei osata vielä lisätä");
+        ModalController.showModal(RekisteriGUIController.class.getResource("Joukkueet.fxml"), "Joukkueet", null, "");
+    }
     
     
     @Override

@@ -1,5 +1,7 @@
 package harkkatyo;
 
+import java.io.*;
+
 /**
  * Joukkueen tiedot, jolle lisätään uusia kilpailuja
  * 
@@ -9,73 +11,86 @@ package harkkatyo;
  */
 public class Joukkue {
     
-    String kilpailu, sarja;
-    int vuosi, sijoitus;
-    double pisteet;
+    private int tunnusNro;
+    private String joukkueenNimi = "";
+    private static int seuraavaNro    = 1;
+
     
     /**
-     * @param kilpailu -
-     * @param vuosi -
-     * @param sarja -
-     * @param pisteet -
-     * @param sijoitus -
+     * @return joukkuuen nimi
      */
-    public Joukkue(String kilpailu, int vuosi, String sarja, double pisteet, int sijoitus) {
-        this.kilpailu = kilpailu;
-        this.sarja = sarja;
-        this.vuosi = vuosi;
-        this.sijoitus = sijoitus;
-        this.pisteet = pisteet;
-    }
-    
-    /**
-     * @param kilpailu -
-     */
-    public void setKilpailu(String kilpailu) {
-        this.kilpailu = kilpailu;
+    public String getNimi() {
+        return joukkueenNimi;
     }
     
     /**
      * 
-     * @param sarja -
      */
-    public void setSarja(String sarja) {
-        this.sarja = sarja;
+    public void vastaaLumo() {
+        joukkueenNimi = "Lumo";
     }
-    
+
     /**
-     * 
-     * @param vuosi -
+     * Tulostetaan henkilön tiedot
+     * @param out tietovirta johon tulostetaan
      */
-    public void setVuosi(int vuosi) {
-        this.vuosi = vuosi;
+    public void tulosta(PrintStream out) {
+        out.println(joukkueenNimi);
     }
-    
-    public void setSijoitus(int sijoitus) {
-        this.sijoitus = sijoitus;
+
+
+    /**
+     * Tulostetaan henkilön tiedot
+     * @param os tietovirta johon tulostetaan
+     */
+    public void tulosta(OutputStream os) {
+        tulosta(new PrintStream(os));
     }
-    
-    public void setPisteet(double pisteet) {
-        this.pisteet = pisteet;
+
+
+    /**
+     * Antaa jäsenelle seuraavan rekisterinumeron.
+     * @return jäsenen uusi tunnusNro
+     * @example
+     * <pre name="test">
+     *   Jasen aku1 = new Jasen();
+     *   aku1.getTunnusNro() === 0;
+     *   aku1.rekisteroi();
+     *   Jasen aku2 = new Jasen();
+     *   aku2.rekisteroi();
+     *   int n1 = aku1.getTunnusNro();
+     *   int n2 = aku2.getTunnusNro();
+     *   n1 === n2-1;
+     * </pre>
+     */
+    public int rekisteroi() {
+        tunnusNro = seuraavaNro;
+        seuraavaNro++;
+        return tunnusNro;
     }
-    
-    public String getKilpailu(){
-        return kilpailu;
+
+
+    /**
+     * Palauttaa jäsenen tunnusnumeron.
+     * @return jäsenen tunnusnumero
+     */
+    public int getTunnusNro() {
+        return tunnusNro;
     }
-    
-    public String getSarja(){
-        return sarja;
+
+
+    /**
+     * Testiohjelma jäsenelle.
+     * @param args ei käytössä
+     */
+    public static void main(String args[]) {
+        Joukkue lumo = new Joukkue(), sirius = new Joukkue();
+        lumo.rekisteroi();
+        sirius.rekisteroi();
+        lumo.vastaaLumo();
+        lumo.tulosta(System.out);
+        sirius.tulosta(System.out);
+
     }
-    
-    public int getVuosi() {
-        return vuosi;
-    }
-    
-    public int getSijoitus() {
-        return sijoitus;
-    }
-    
-    public double getPisteet() {
-        return pisteet;
-    }
+
 }

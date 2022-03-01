@@ -26,44 +26,28 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class JoukkueController implements ModalControllerInterface<String>{
 
-    @FXML
-    private TableView<Joukkue> Joukkue;
-
-    @FXML
-    private TableColumn<Joukkue, String> Kilpailu;
-
-    @FXML
-    private TableColumn<Joukkue, Double> Pisteet;
-
-    @FXML
-    private TableColumn<Joukkue, String> Sarja;
-
-    @FXML
-    private TableColumn<Joukkue, Integer> Sijoitus;
-
-    @FXML
-    private TableColumn<Joukkue, Integer> Vuosi;
+    
     
     /**
      * 
      * @param event
      */
     @FXML
-    void handleMuokkaa(ActionEvent event) {
+    void handleMuokkaa() {
         ModalController.showModal(JoukkueController.class.getResource("LisaaKilpailu.fxml"), "Joukkue", null, "");
     }
     
     /**
      * 
-     * @param event -
+     * 
      */
     @FXML
-    public void handleNayta(ActionEvent event) {
-        alusta();
+    public void handleNayta() {
+        Dialogs.showMessageDialog("Ei osata vielä näyttää");
     }
     
     @FXML
-    public void handleHelp(ActionEvent event) {
+    public void handleHelp() {
         apua();
     }
     
@@ -72,13 +56,11 @@ public class JoukkueController implements ModalControllerInterface<String>{
      * @param event
      */
     @FXML
-    void handleTulosta(ActionEvent event) {
+    void handleTulosta() {
         Dialogs.showMessageDialog("Ei osata vielä tulostaa");
     }
     
-    ObservableList<Joukkue> list = FXCollections.observableArrayList(
-            new Joukkue("SM-kilpailut", 2017, "14-16v.", 17.65, 7)
-            );
+    
     /**
      * @param url - 
      * @param bundle - 
@@ -90,16 +72,7 @@ public class JoukkueController implements ModalControllerInterface<String>{
     /**
      * Alustaa joukkueen tiedot
      */
-    protected void alusta() {
-        Kilpailu.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("kilpailu"));
-        Vuosi.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("vuosi"));
-        Sarja.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("sarja"));
-        Pisteet.setCellValueFactory(new PropertyValueFactory<Joukkue, Double>("pisteet"));
-        Sijoitus.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("sijoitus"));
-        
-        Joukkue.setItems(list);
-        
-    }
+    
     
     private void apua() {
         Desktop desktop = Desktop.getDesktop();
