@@ -1,6 +1,8 @@
 package harkkatyo;
 
 import javafx.application.Application;
+
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -18,13 +20,18 @@ public class RekisteriMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("RekisteriGUIView.fxml"));
-            final Pane root = ldr.load();
-            //final RekisteriGUIController rekisteriCtrl = (RekisteriGUIController) ldr.getController();
-            Scene scene = new Scene(root);
+            final FXMLLoader ldr = new FXMLLoader(getClass().getResource("RekisteriGUIView.fxml"));
+            final Pane root = (Pane)ldr.load();
+            final RekisteriGUIController rekisteriCtrl = (RekisteriGUIController)ldr.getController();
+            final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("rekisteri.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("rekisteri");
+            
+            Rekisteri rekisteri = new Rekisteri();
+            rekisteriCtrl.setRekisteri(rekisteri);
+           
+            
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();

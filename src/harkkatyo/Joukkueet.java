@@ -3,6 +3,7 @@ package harkkatyo;
 import java.io.PrintStream;
 
 /**
+ * crc tietoja tähän
  * @author mineanupponen
  * @version 1.3.2022
  *
@@ -78,29 +79,31 @@ public class Joukkueet {
     /**
      * Testiohjelma jäsenistölle
      * @param args ei käytössä
+     * @throws SailoException ei käytössä
      */
-    public static void main(String args[]) {
-        Joukkueet joukkue = new Joukkueet();
+    public static void main(String args[]) throws SailoException {
+        Joukkueet joukkueet = new Joukkueet();
 
         Joukkue lumo = new Joukkue(), sirius = new Joukkue();
         lumo.rekisteroi();
+        lumo.vastaaLumo();
         sirius.rekisteroi();
 
 
         try {
-            joukkue.lisaa(lumo);
-            joukkue.lisaa(sirius);
+            joukkueet.lisaa(lumo);
+            joukkueet.lisaa(sirius);
 
             System.out.println("============= Joukkueet testi =================");
 
-            for (int i = 0; i < joukkue.getLkm(); i++) {
-                Joukkue joukkue1 = joukkue.anna(i);
-                System.out.println("Jäsen nro: " + i);
-                joukkue1.tulosta(System.out);
+            for (int i = 0; i < joukkueet.getLkm(); i++) {
+                Joukkue joukkue = joukkueet.anna(i);
+                System.out.println("Joukkue nro: " + i);
+                joukkue.tulosta(System.out);
             }
 
         } catch (SailoException ex) {
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
         }
     }
 

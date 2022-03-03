@@ -27,13 +27,14 @@ import javafx.scene.layout.Pane;
  *Luokka käyttöliittymän tapahtumien hoitamiseksi
  */
 public class RekisteriGUIController implements Initializable{
+    
+    
+
 
     /**
      * Uuden joukkueen lisääminen
      */
-    @FXML private void handleUusiJoukkue() {
-        ModalController.showModal(RekisteriGUIController.class.getResource("LisaaJoukkue.fxml"), "Lisää joukkue", null, "");
-    }
+
     
     /**
      * Käsitellään joukkueen hakeminen
@@ -48,15 +49,26 @@ public class RekisteriGUIController implements Initializable{
         ModalController.showModal(RekisteriGUIController.class.getResource("Joukkueet.fxml"), "Joukkueet", null, "");
     }
     
-    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         alusta();
     }
     
-    protected void alusta() {
-        //
-        
+  //=========================================================================
+    private Rekisteri rekisteri;
+    
+    /**
+     * @param rekisteri -
+     */
+    public void setRekisteri(Rekisteri rekisteri) {
+        this.rekisteri = rekisteri;
     }
-
+    
+    private void alusta() {
+        //
+    }
 }
+
+    
+
+    

@@ -2,11 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
+<?import fi.jyu.mit.fxgui.ListChooser?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="harkkatyo.JoukkueetController">
    <left>
@@ -26,11 +29,12 @@
       </MenuButton>
    </left>
    <center>
-      <ListView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <ListChooser fx:id="chooserJoukkueet" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <SplitPane dividerPositions="0.5, 0.5" prefHeight="31.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.15802675585284282, 0.3302675585284281, 0.5" prefHeight="31.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <items>
+            <TextField />
             <Button mnemonicParsing="false" onAction="#handleLisaaJoukkue" text="Lisää joukkue" />
             <Button mnemonicParsing="false" onAction="#handlePoistaJoukkue" text="Poista joukkue" />
             <Button mnemonicParsing="false" onAction="#handleNayta" text="näytä" />
