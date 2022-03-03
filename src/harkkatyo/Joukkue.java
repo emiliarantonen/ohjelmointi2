@@ -11,7 +11,7 @@ import java.io.*;
  */
 public class Joukkue {
     
-    private int tunnusNro;
+    private int idNro;
     private String joukkueenNimi = "";
     private static int seuraavaNro    = 1;
 
@@ -31,16 +31,16 @@ public class Joukkue {
     }
 
     /**
-     * Tulostetaan henkilön tiedot
+     * Tulostetaan joukkueen tiedot
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(joukkueenNimi);
+        out.println(String.format("%03d", idNro)+" "+joukkueenNimi);
     }
 
 
     /**
-     * Tulostetaan henkilön tiedot
+     * Tulostetaan joukkueen tiedot
      * @param os tietovirta johon tulostetaan
      */
     public void tulosta(OutputStream os) {
@@ -49,38 +49,38 @@ public class Joukkue {
 
 
     /**
-     * Antaa jäsenelle seuraavan rekisterinumeron.
-     * @return jäsenen uusi tunnusNro
+     * Antaa joukkueelle seuraavan rekisterinumeron.
+     * @return joukkueen uusi tunnusNro
      * @example
      * <pre name="test">
-     *   Jasen aku1 = new Jasen();
-     *   aku1.getTunnusNro() === 0;
-     *   aku1.rekisteroi();
-     *   Jasen aku2 = new Jasen();
-     *   aku2.rekisteroi();
-     *   int n1 = aku1.getTunnusNro();
-     *   int n2 = aku2.getTunnusNro();
+     *   Joukkue lumo = new Joukkue();
+     *   lumo.getTunnusNro() === 0;
+     *   lumo.rekisteroi();
+     *   Joukkue sirius = new Joukkue();
+     *   sirius.rekisteroi();
+     *   int n1 = lumo.getTunnusNro();
+     *   int n2 = sirius.getTunnusNro();
      *   n1 === n2-1;
      * </pre>
      */
     public int rekisteroi() {
-        tunnusNro = seuraavaNro;
+        idNro = seuraavaNro;
         seuraavaNro++;
-        return tunnusNro;
+        return idNro;
     }
 
 
     /**
-     * Palauttaa jäsenen tunnusnumeron.
-     * @return jäsenen tunnusnumero
+     * Palauttaa joukkueen tunnusnumeron.
+     * @return joukkueen tunnusnumero
      */
-    public int getTunnusNro() {
-        return tunnusNro;
+    public int getIdNro() {
+        return idNro;
     }
 
 
     /**
-     * Testiohjelma jäsenelle.
+     * Testiohjelma joukkueelle.
      * @param args ei käytössä
      */
     public static void main(String args[]) {
@@ -88,6 +88,7 @@ public class Joukkue {
         lumo.rekisteroi();
         sirius.rekisteroi();
         lumo.vastaaLumo();
+        sirius.vastaaLumo();
         lumo.tulosta(System.out);
         sirius.tulosta(System.out);
 
