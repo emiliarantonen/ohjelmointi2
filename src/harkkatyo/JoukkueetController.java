@@ -1,11 +1,15 @@
 package harkkatyo;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
 /**
@@ -13,7 +17,7 @@ import javafx.stage.Stage;
  * @version 1.3.2022
  *
  */
-public class JoukkueetController implements ModalControllerInterface<String>{
+public class JoukkueetController implements Initializable{
     
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
 
@@ -31,26 +35,22 @@ public class JoukkueetController implements ModalControllerInterface<String>{
     void handlePoistaJoukkue() {
         Dialogs.showMessageDialog("Ei osaa vielä poistaa");
     }
-
+    
     @Override
-    public String getResult() {
-        // TODO Auto-generated method stub
-        return null;
+    public void initialize(URL url, ResourceBundle bundle) {
+        alusta();
     }
 
-    @Override
-    public void handleShown() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void setDefault(String oletus) {
-        // TODO Auto-generated method stub
-        
-    }
-//========
+   //==================
     private Rekisteri rekisteri;
+    
+    
+    /**
+     * @param rekisteri -
+     */
+    public void setRekisteri(Rekisteri rekisteri) {
+        this.rekisteri = rekisteri;
+    }
     
     private void uusiJoukkue() {
         Joukkue uusi = new Joukkue();
@@ -66,31 +66,21 @@ public class JoukkueetController implements ModalControllerInterface<String>{
     
     private void hae(int nro) {
         chooserJoukkueet.clear();
+        
         int index=0;
         for(int i=0; i< rekisteri.getJoukkueita(); i++) {
             Joukkue joukkue = rekisteri.annaJoukkue(i);
             if (joukkue.getIdNro() == nro) index =i;
-            chooserJoukkueet.add(""+joukkue.getIdNro(), joukkue);
+            chooserJoukkueet.add(""+joukkue.getIdNro() +" "+ joukkue.getNimi(), joukkue);
         }
-        
         
        chooserJoukkueet.setSelectedIndex(index);
     }
 
     
-
-   
-    
-    /**
-     * @param modalityStage -
-     * @param oletus -
-     * @return -
-     */
-    public static String kysyNimi(Stage modalityStage, String oletus) {
-        return ModalController.showModal(
-                RekisteriGUIController.class.getResource("RekisteriGUIView.fxml"),
-                "Rekisteri",
-                modalityStage, oletus);
+    private void alusta() {
+        chooserJoukkueet.clear();
     }
+   
     
 }

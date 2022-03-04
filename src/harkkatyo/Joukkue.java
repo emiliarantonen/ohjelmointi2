@@ -27,7 +27,7 @@ public class Joukkue {
      * 
      */
     public void vastaaLumo() {
-        joukkueenNimi = "Lumo";
+        joukkueenNimi = "Lumo " ;
     }
 
     /**

@@ -1,23 +1,11 @@
 package harkkatyo;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import fi.jyu.mit.fxgui.*;
-import javafx.fxml.Initializable;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
-import harkkatyo.Joukkue;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.scene.layout.Pane;
+import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.ModalControllerInterface;
 
 /**
  * @author mineanupponen
@@ -26,10 +14,11 @@ import javafx.scene.layout.Pane;
  *
  *Luokka käyttöliittymän tapahtumien hoitamiseksi
  */
-public class RekisteriGUIController implements Initializable{
+public class RekisteriGUIController implements ModalControllerInterface<String>{
     
     
-
+    @FXML private TextField textVastaus;
+    private String vastaus = null;
 
     /**
      * Uuden joukkueen lisääminen
@@ -41,7 +30,10 @@ public class RekisteriGUIController implements Initializable{
      */
     @FXML private void handleHaeJoukkue() {
         //Dialogs.showMessageDialog("Ei osata vielä lisätä");
-        ModalController.showModal(RekisteriGUIController.class.getResource("Joukkue.fxml"), "Joukkue", null, "");
+        //ModalController.showModal(RekisteriGUIController.class.getResource("Joukkue.fxml"), "Joukkue", null, "");
+        vastaus = textVastaus.getText();
+        ModalController.closeStage(textVastaus);
+        
     }
     
     @FXML private void handleNaytaJoukkueet() {
@@ -49,24 +41,39 @@ public class RekisteriGUIController implements Initializable{
         ModalController.showModal(RekisteriGUIController.class.getResource("Joukkueet.fxml"), "Joukkueet", null, "");
     }
     
+    
     @Override
-    public void initialize(URL url, ResourceBundle bundle) {
-        alusta();
+    public String getResult() {
+        return vastaus;
+    }
+
+    @Override
+    public void handleShown() {
+        textVastaus.requestFocus();
+        
+    }
+
+    @Override
+    public void setDefault(String oletus) {
+        textVastaus.setText(oletus);
     }
     
   //=========================================================================
-    private Rekisteri rekisteri;
     
+ 
     /**
-     * @param rekisteri -
+     * @param modalityStage -
+     * @param oletus -
+     * @return -
      */
-    public void setRekisteri(Rekisteri rekisteri) {
-        this.rekisteri = rekisteri;
+    public static String kysyNimi(Stage modalityStage, String oletus) {
+        return ModalController.showModal(
+                RekisteriGUIController.class.getResource("RekisteriGUIController.fxml"),
+                "Rekisteri",
+                modalityStage, oletus);
     }
-    
-    private void alusta() {
-        //
-    }
+
+  
 }
 
     

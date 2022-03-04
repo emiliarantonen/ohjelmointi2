@@ -20,9 +20,9 @@ public class RekisteriMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            final FXMLLoader ldr = new FXMLLoader(getClass().getResource("RekisteriGUIView.fxml"));
+            final FXMLLoader ldr = new FXMLLoader(getClass().getResource("Joukkueet.fxml"));
             final Pane root = (Pane)ldr.load();
-            final RekisteriGUIController rekisteriCtrl = (RekisteriGUIController)ldr.getController();
+            final JoukkueetController rekisteriCtrl = (JoukkueetController)ldr.getController();
             final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("rekisteri.css").toExternalForm());
             primaryStage.setScene(scene);
