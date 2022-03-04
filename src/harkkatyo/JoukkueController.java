@@ -46,6 +46,9 @@ public class JoukkueController implements ModalControllerInterface<String>{
         Dialogs.showMessageDialog("Ei osata vielä näyttää");
     }
     
+    /**
+     * 
+     */
     @FXML
     public void handleHelp() {
         apua();
