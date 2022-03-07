@@ -38,15 +38,15 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Tulosta" />
-                  <MenuItem mnemonicParsing="false" text="Lopeta" />
-                  <MenuItem mnemonicParsing="false" text="Avaa" />
-                  <MenuItem mnemonicParsing="false" text="Tallenna" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Hae" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+              <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Lisää kilpailu" />
+              <MenuItem mnemonicParsing="false" onAction="#handleLisaaKilpailu" text="Lisää kilpailu" />
                   <MenuItem mnemonicParsing="false" text="Muokkaa kilpailua" />
                   <MenuItem mnemonicParsing="false" text="Poista kilpailu" />
             </items>

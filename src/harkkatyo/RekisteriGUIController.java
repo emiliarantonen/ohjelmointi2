@@ -35,12 +35,8 @@ public class RekisteriGUIController implements ModalControllerInterface<String>{
         ModalController.closeStage(textVastaus);
         
     }
-    
-    @FXML private void handleNaytaJoukkueet() {
-        //Dialogs.showMessageDialog("Ei osata vielä lisätä");
-        ModalController.showModal(RekisteriGUIController.class.getResource("Joukkueet.fxml"), "Joukkueet", null, "");
-    }
-    
+   
+   
     
     @Override
     public String getResult() {
@@ -68,11 +64,12 @@ public class RekisteriGUIController implements ModalControllerInterface<String>{
      */
     public static String kysyNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(
-                RekisteriGUIController.class.getResource("RekisteriGUIController.fxml"),
+                RekisteriGUIController.class.getResource("RekisteriGUIView.fxml"),
                 "Rekisteri",
                 modalityStage, oletus);
     }
 
+        
   
 }
 

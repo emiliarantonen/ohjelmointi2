@@ -44,14 +44,7 @@
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin></Button>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Button mnemonicParsing="false" onAction="#handleNaytaJoukkueet" text="Näytä kaikki joukkueet" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <GridPane.margin>
-                  <Insets left="80.0" />
-               </GridPane.margin></Button>
+            <TextField fx:id="textVastaus" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>

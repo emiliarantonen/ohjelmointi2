@@ -11,6 +11,7 @@ import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,6 +58,44 @@ public class JoukkueetController implements Initializable{
         apua();
     }
     
+    
+    /**
+     * 
+     */
+    @FXML
+    public void handleAvaa() {
+        avaa();
+    }
+    
+    /**
+     * 
+     */
+    @FXML
+    public void handleTallenna() {
+        tallenna();
+    }
+    
+    /**
+     * 
+     */
+    @FXML
+    public void handleLopeta() {
+        tallenna();
+        Platform.exit();
+    }
+    
+    /**
+     * 
+     */
+    @FXML
+    public void handleTulosta() {
+        Dialogs.showMessageDialog("Tulostetaan, mutta ei osata vielä");
+    }
+    
+    @FXML
+    public void handleLisaaKilpailu() {
+        ModalController.showModal(JoukkueetController.class.getResource("LisaaKilpailu.fxml"), "Lisää kilpailu", null, "");
+    }
    
     
     
@@ -75,7 +114,7 @@ public class JoukkueetController implements Initializable{
         }
 
     }
-    
+
     private Rekisteri rekisteri;
     
     
@@ -121,25 +160,35 @@ public class JoukkueetController implements Initializable{
      */
     public boolean avaa() {
         String uusinimi = RekisteriGUIController.kysyNimi(null, joukkueenNimi);
-         if (uusinimi == null) return false;
-         lueTiedosto(uusinimi);
-         return true;
+        if (uusinimi == null) return false;
+        //lueTiedosto(uusinimi);
+        return true;
     }
     
     /**
      * @param nimi -
      */
-    protected void lueTiedosto(String nimi) {
-        joukkueenNimi = nimi;
-        setTitle("Kerho - " + joukkueenNimi);
-        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
-        // if (virhe != null) 
-            Dialogs.showMessageDialog(virhe);
+//    protected void lueTiedosto(String nimi) {
+//        joukkueenNimi = nimi;
+//        setTitle("Kerho - " + joukkueenNimi);
+//        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
+//        // if (virhe != null) 
+//            Dialogs.showMessageDialog(virhe);
+//    }
+    
+//    private void setTitle(String title) {
+//        ModalController.getStage(hakuehto).setTitle(title);
+//    }
+    
+    /**
+     * @return -
+     */
+    public boolean voikoSulkea() {
+        tallenna();
+        return true;
     }
     
-    private void setTitle(String title) {
-        ModalController.getStage(hakuehto).setTitle(title);
+    private void tallenna() {
+        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
     }
-   
-
 }

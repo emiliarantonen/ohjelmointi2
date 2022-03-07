@@ -28,11 +28,20 @@ public class RekisteriMain extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("rekisteri");
             
+            
+            primaryStage.setOnCloseRequest((event) -> {
+                if ( !rekisteriCtrl.voikoSulkea() ) event.consume();
+            });
+            
             Rekisteri rekisteri = new Rekisteri();
             rekisteriCtrl.setRekisteri(rekisteri);
-           
             
             primaryStage.show();
+            if(!rekisteriCtrl.avaa()) Platform.exit();
+            
+           
+            
+            
         } catch(Exception e) {
             e.printStackTrace();
         }
