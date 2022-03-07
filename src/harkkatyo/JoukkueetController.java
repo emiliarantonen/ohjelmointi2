@@ -1,5 +1,9 @@
 package harkkatyo;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -45,9 +49,33 @@ public class JoukkueetController implements Initializable{
         alusta();
     }
     
+    /**
+     * 
+     */
+    @FXML
+    public void handleHelp() {
+        apua();
+    }
+    
+   
+    
     
 
    //==================
+    
+    private void apua() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2022k/ht/mmnuppoz");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
+
+    }
+    
     private Rekisteri rekisteri;
     
     
