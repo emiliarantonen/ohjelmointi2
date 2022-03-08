@@ -1,5 +1,7 @@
 package harkkatyo;
 
+import java.util.List;
+
 /**
  * @author emiliarantonen
  * @version 3.3.2022
@@ -8,6 +10,7 @@ package harkkatyo;
 public class Rekisteri {
     
     private Joukkueet joukkueet = new Joukkueet();
+    private Kilpailut kilpailut = new Kilpailut();
 
    
     /**
@@ -16,6 +19,13 @@ public class Rekisteri {
      */
     public void lisaa(Joukkue joukkue) throws SailoException {
         joukkueet.lisaa(joukkue);
+    }
+    
+    /**
+     * @param kilpailu -
+     */
+    public void lisaa(Kilpailu kilpailu) {
+        kilpailut.lisaa(kilpailu);
     }
     
     /**
@@ -31,6 +41,14 @@ public class Rekisteri {
      */
     public Joukkue annaJoukkue(int i) {
         return joukkueet.anna(i);
+    }
+    
+    /**
+     * @param joukkue -
+     * @return -
+     */
+    public List<Kilpailu> annaKilpailut(Joukkue joukkue) {
+        return kilpailut.annaKilpailut(joukkue.getIdNro());
     }
     
     /**

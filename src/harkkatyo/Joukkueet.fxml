@@ -65,7 +65,7 @@
             <Label text="Joukkueen kilpailut" BorderPane.alignment="CENTER" />
          </top>
          <center>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane fx:id="panelJoukkue" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
                   <StringGrid rivit="Kilpailu|Vuosi|Sarja|Pisteet|Sijoitus&#10;" />
                </content>

@@ -2,20 +2,26 @@ package harkkatyo;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -27,6 +33,7 @@ public class JoukkueetController implements Initializable{
     
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
     @FXML private TextField hakuehto;
+    @FXML private ScrollPane panelJoukkue;
     
     private String joukkueenNimi = "Lumo";
 
@@ -92,15 +99,23 @@ public class JoukkueetController implements Initializable{
         Dialogs.showMessageDialog("Tulostetaan, mutta ei osata vielä");
     }
     
+    /**
+     * 
+     */
     @FXML
     public void handleLisaaKilpailu() {
-        ModalController.showModal(JoukkueetController.class.getResource("LisaaKilpailu.fxml"), "Lisää kilpailu", null, "");
+        //ModalController.showModal(JoukkueetController.class.getResource("LisaaKilpailu.fxml"), "Lisää kilpailu", null, "");
+        lisaaKilpailu();
     }
    
     
     
 
    //==================
+    
+    private Rekisteri rekisteri;
+    private Joukkue joukkueKohdalla;
+    private TextArea areaJoukkue = new TextArea();
     
     private void apua() {
         Desktop desktop = Desktop.getDesktop();
@@ -115,7 +130,8 @@ public class JoukkueetController implements Initializable{
 
     }
 
-    private Rekisteri rekisteri;
+    
+    
     
     
     /**
@@ -137,6 +153,18 @@ public class JoukkueetController implements Initializable{
         hae(uusi.getIdNro());
     }
     
+    /**
+     * 
+     */
+    public void lisaaKilpailu() { 
+        if ( joukkueKohdalla == null ) return;  
+        Kilpailu kil = new Kilpailu();  
+        kil.rekisteroi();  
+        kil.vastaaSMKisat(joukkueKohdalla.getIdNro());  
+        rekisteri.lisaa(kil);  
+        hae(joukkueKohdalla.getIdNro());          
+    }
+    
     private void hae(int nro) {
         chooserJoukkueet.clear();
         
@@ -152,7 +180,37 @@ public class JoukkueetController implements Initializable{
 
     
     private void alusta() {
+        panelJoukkue.setContent(areaJoukkue);
+        areaJoukkue.setFont(new Font("Courier New", 12));
+        panelJoukkue.setFitToHeight(true);
+        
         chooserJoukkueet.clear();
+        chooserJoukkueet.addSelectionListener(e -> naytaJoukkue());
+ 
+    }
+    
+    private void naytaJoukkue() {
+        joukkueKohdalla = chooserJoukkueet.getSelectedObject();
+
+        if (joukkueKohdalla == null) return;
+
+        areaJoukkue.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaJoukkue)) {
+            tulosta(os,joukkueKohdalla);  
+        }
+    }
+    
+    /**
+     * @param os -
+     * @param joukkue -
+     */
+    public void tulosta(PrintStream os, final Joukkue joukkue) {
+        os.println("----------------------------------------------");
+        joukkue.tulosta(os);
+        os.println("----------------------------------------------");
+        List<Kilpailu> kilpailut = rekisteri.annaKilpailut(joukkue);   
+        for (Kilpailu kil:kilpailut)
+            kil.tulosta(os);  
     }
     
     /**
@@ -191,4 +249,6 @@ public class JoukkueetController implements Initializable{
     private void tallenna() {
         Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
     }
+    
+    
 }

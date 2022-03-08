@@ -1,5 +1,8 @@
 package harkkatyo;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,129 +16,80 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * @version 1.3.2022
  *
  */
-public class Kilpailu implements ModalControllerInterface<String>{
+public class Kilpailu {
+    private int idNro;
+    private int tunnusNro;
+    private String kilpailu;
+    private int vuosi;
+    private String sarja;
+    private double pisteet;
+    private int sijoitus;
     
-    @FXML
-    private TableView<Joukkue> Joukkue;
+    private static int seuraavaNro = 1;
 
-    @FXML
-    private TableColumn<Joukkue, String> Kilpailu;
-
-    @FXML
-    private TableColumn<Joukkue, Double> Pisteet;
-
-    @FXML
-    private TableColumn<Joukkue, String> Sarja;
-
-    @FXML
-    private TableColumn<Joukkue, Integer> Sijoitus;
-
-    @FXML
-    private TableColumn<Joukkue, Integer> Vuosi;
-    
-    ObservableList<Joukkue> list = FXCollections.observableArrayList(
-            //new Joukkue("SM-kilpailut", 2017, "14-16v.", 17.65, 7)
-            );
-    
-    /**
-     * 
-     */
-    protected void alusta() {
-        Kilpailu.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("kilpailu"));
-        Vuosi.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("vuosi"));
-        Sarja.setCellValueFactory(new PropertyValueFactory<Joukkue, String>("sarja"));
-        Pisteet.setCellValueFactory(new PropertyValueFactory<Joukkue, Double>("pisteet"));
-        Sijoitus.setCellValueFactory(new PropertyValueFactory<Joukkue, Integer>("sijoitus"));
+    public void vastaaSMKisat(int nro) {
         
-        Joukkue.setItems(list);
-        
+        idNro = nro;
+        kilpailu = "SM-Kilpailut";
+        vuosi = rand(2000, 2022);
+        sarja = "14-16 v.";
+        pisteet = 17.35;
+        sijoitus = rand(1, 10);
+            
     }
     
-    @Override
-    public String getResult() {
-        // TODO Auto-generated method stub
-        return null;
+    public Kilpailu(int nro) {
+        this.idNro = nro;
+    }
+    
+    public Kilpailu() {
+        //
     }
 
-    @Override
-    public void handleShown() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void setDefault(String oletus) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    String kilpailu, sarja;
-    int vuosi, sijoitus;
-    double pisteet;
-    
     /**
-     * @param kilpailu -
-     * @param vuosi -
-     * @param sarja -
-     * @param pisteet -
-     * @param sijoitus -
+     * @param ala -
+     * @param yla -
+     * @return -
      */
-    public Kilpailu(String kilpailu, int vuosi, String sarja, double pisteet, int sijoitus) {
-        this.kilpailu = kilpailu;
-        this.sarja = sarja;
-        this.vuosi = vuosi;
-        this.sijoitus = sijoitus;
-        this.pisteet = pisteet;
+    public static int rand(int ala, int yla) {
+        double n = (yla-ala)*Math.random() + ala;
+        return (int)Math.round(n);
+      }
+       
+    /**
+     * @return - 
+     */
+    public int rekisteroi() {
+        tunnusNro = seuraavaNro;
+        seuraavaNro++;
+        return tunnusNro;
+    }
+    /**
+     * @return mille joukkueelle kilpailu kuuluu
+     */
+    public int getIdNro() {
+        return idNro;
     }
     
     /**
-     * @param kilpailu -
+     * Palautetaan kilpailun oma id
+     * @return kilpailun id
      */
-    public void setKilpailu(String kilpailu) {
-        this.kilpailu = kilpailu;
+    public int getTunnusNro() {
+        return tunnusNro;
     }
     
-    /**
-     * 
-     * @param sarja -
-     */
-    public void setSarja(String sarja) {
-        this.sarja = sarja;
+    public void tulosta(OutputStream os) {
+        tulosta(new PrintStream(os));
     }
     
-    /**
-     * 
-     * @param vuosi -
-     */
-    public void setVuosi(int vuosi) {
-        this.vuosi = vuosi;
+    public void tulosta(PrintStream out) {
+        out.println(tunnusNro +" "+idNro + " " +kilpailu + " " + vuosi + " " + sarja + " " + pisteet + " " + sijoitus);
     }
     
-    public void setSijoitus(int sijoitus) {
-        this.sijoitus = sijoitus;
-    }
-    
-    public void setPisteet(double pisteet) {
-        this.pisteet = pisteet;
-    }
-    
-    public String getKilpailu(){
-        return kilpailu;
-    }
-    
-    public String getSarja(){
-        return sarja;
-    }
-    
-    public int getVuosi() {
-        return vuosi;
-    }
-    
-    public int getSijoitus() {
-        return sijoitus;
-    }
-    
-    public double getPisteet() {
-        return pisteet;
+    public static void main(String[] args) {
+        Kilpailu kil = new Kilpailu();
+        kil.vastaaSMKisat(2);
+        kil.tulosta(System.out);
     }
 }
