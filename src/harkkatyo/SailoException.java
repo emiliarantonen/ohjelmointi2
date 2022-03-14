@@ -18,5 +18,6 @@ public class SailoException extends Exception{
         public SailoException(String viesti) {
             super(viesti);
         }
+        
 
 }
