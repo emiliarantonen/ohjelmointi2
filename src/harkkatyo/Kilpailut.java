@@ -1,7 +1,10 @@
 package harkkatyo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 /**
@@ -30,11 +33,54 @@ public class Kilpailut {
             if (kil.getIdNro() == tunnusNro) etsityt.add(kil);
         return etsityt;
     }
+    
+    /**
+     * @param hakemisto -
+     * @throws SailoException -
+     */
+    public void tallenna(String hakemisto) throws SailoException {
+        File ftied = new File(hakemisto + "/kilpailut.dat");
+        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))){
+            for (Kilpailu kil: alkiot) {
+                  fo.println(kil.toString());
+            }
+        } catch (FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto "+ ftied.getAbsolutePath()+ " ei aukea");
+        }
+    }
+    
+    /**
+     * @param hakemisto -
+     * @throws SailoException -
+     */
+    public void lueTiedostosta(String hakemisto) throws SailoException {
+        String tiedostonNimi = hakemisto + "/kilpailut.dat";
+        File ftied = new File(tiedostonNimi);
+        
+        try (Scanner fi = new Scanner(new FileInputStream(ftied))){
+            while ( fi.hasNext()) {
+                String s = fi.nextLine().trim();
+                if (s==null || "".equals(s) || s.charAt(0)==';') continue;
+                Kilpailu kil = new Kilpailu();
+                kil.parse(s);
+                lisaa(kil);
+            }
+        } catch (FileNotFoundException e) {
+            throw new SailoException("Ei saa luettua tiedostoa " + tiedostonNimi);
+        }
+    }
+
     /**
      * @param args ei käytössä
      */
     public static void main(String[] args) {
         Kilpailut kilpailut = new Kilpailut();
+        
+        try {
+            kilpailut.lueTiedostosta("rekisteri");
+        } catch (SailoException ex) {
+            System.err.println(ex.getMessage());
+        }
         Kilpailu SM1 = new Kilpailu();
         SM1.vastaaSMKisat(2);
         Kilpailu SM2 = new Kilpailu();
@@ -57,7 +103,13 @@ public class Kilpailut {
             System.out.print(kil.getIdNro() + " ");
             kil.tulosta(System.out);
         }
-
+        
+        try {
+            kilpailut.tallenna("rekisteri");
+            
+        } catch (SailoException e) {
+            e.printStackTrace();
+        }
     }
 
 }

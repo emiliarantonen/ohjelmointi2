@@ -1,6 +1,7 @@
 package harkkatyo;
 
-import java.io.PrintStream;
+import java.io.*;
+import java.util.*;
 
 /**
  * crc tietoja tähän
@@ -53,17 +54,20 @@ public class Joukkueet {
      * @throws SailoException jos lukeminen epäonnistuu
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + "/nimet.dat";
-        throw new SailoException("Ei osata vielä lukea tiedostoa " + tiedostonNimi);
-    }
-
-
-    /**
-     * Tallentaa joukkueen tiedostoon.  Kesken.
-     * @throws SailoException jos talletus epäonnistuu
-     */
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
+        String tiedostonNimi = hakemisto + "/joukkueet.dat";
+        File ftied = new File(tiedostonNimi);
+        
+        try (Scanner fi = new Scanner(new FileInputStream(ftied))){
+            while ( fi.hasNext()) {
+                String s = fi.nextLine();
+                if (s==null || "".equals(s) || s.charAt(0)==';') continue;
+                Joukkue joukkue = new Joukkue();
+                joukkue.parse(s);
+                lisaa(joukkue);
+            }
+        } catch (FileNotFoundException e) {
+            throw new SailoException("Ei saa luettua tiedostoa " + tiedostonNimi);
+        }
     }
 
 
@@ -74,7 +78,25 @@ public class Joukkueet {
     public int getLkm() {
         return lkm;
     }
-
+    
+    /**
+     * Tallentaa joukkueet tiedostoon
+     * @param hakemisto -
+     * @throws SailoException -
+     */
+    public void tallenna(String hakemisto) throws SailoException {
+        File ftied = new File(hakemisto + "/joukkueet.dat");
+        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))){
+            for (int i=0; i<getLkm(); i++) {
+                Joukkue joukkue = this.anna(i);
+                fo.println(joukkue.toString());
+            }
+        } catch (FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto "+ ftied.getAbsolutePath()+ " ei aukea");
+        }
+    }
+    
+    
 
     /**
      * Testiohjelma jäsenistölle
@@ -83,7 +105,13 @@ public class Joukkueet {
      */
     public static void main(String args[]) throws SailoException {
         Joukkueet joukkueet = new Joukkueet();
-
+        
+        try {
+            joukkueet.lueTiedostosta("rekisteri");
+        } catch (SailoException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
         Joukkue lumo = new Joukkue(), sirius = new Joukkue();
         lumo.rekisteroi();
         lumo.vastaaLumo();
@@ -94,16 +122,26 @@ public class Joukkueet {
             joukkueet.lisaa(lumo);
             joukkueet.lisaa(sirius);
 
-            System.out.println("============= Joukkueet testi =================");
-
-            for (int i = 0; i < joukkueet.getLkm(); i++) {
-                Joukkue joukkue = joukkueet.anna(i);
-                System.out.println("Joukkue nro: " + i);
-                joukkue.tulosta(System.out);
-            }
 
         } catch (SailoException ex) {
             System.err.println(ex.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println(e.getMessage());
+        }
+        
+        System.out.println("============= Joukkueet testi =================");
+
+        for (int i = 0; i < joukkueet.getLkm(); i++) {
+            Joukkue joukkue = joukkueet.anna(i);
+            System.out.println("Joukkue nro: " + i);
+            joukkue.tulosta(System.out);
+        }
+        
+        try{
+            joukkueet.tallenna("rekisteri");
+        } catch (SailoException e) {
+            //e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 

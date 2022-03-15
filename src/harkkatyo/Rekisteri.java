@@ -1,5 +1,6 @@
 package harkkatyo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -11,6 +12,8 @@ public class Rekisteri {
     
     private Joukkueet joukkueet = new Joukkueet();
     private Kilpailut kilpailut = new Kilpailut();
+    
+    private String hakemisto="rekisteri";
 
    
     /**
@@ -52,10 +55,52 @@ public class Rekisteri {
     }
     
     /**
+     * @param nimi -
+     * @throws SailoException -
+     */
+    public void lueTiedostosta(String nimi) throws SailoException{
+        File dir = new File(nimi);
+        dir.mkdir();
+        joukkueet = new Joukkueet();
+        kilpailut = new Kilpailut();
+        
+        hakemisto=nimi;
+        joukkueet.lueTiedostosta(nimi);
+        kilpailut.lueTiedostosta(nimi);
+    }
+    
+    
+    /**
+     * @throws SailoException -
+     */
+    public void tallenna() throws SailoException {
+        String virhe = "";
+        try {
+            joukkueet.tallenna(hakemisto);            
+        } catch (SailoException ex) {
+            virhe = ex.getMessage();
+        }
+        
+        try {
+            kilpailut.tallenna(hakemisto);
+        } catch (SailoException ex) {
+            virhe += ex.getMessage();
+        }
+        
+        if ( !"".equals(virhe)) throw new SailoException(virhe);
+    }
+    
+    /**
      * @param args ei käytössä
      */
     public static void main(String[] args) {
         Rekisteri rekisteri = new Rekisteri();
+        
+        try {
+            rekisteri.lueTiedostosta("koerekisteri");
+        } catch (SailoException ex) {
+            System.out.println(ex.getMessage());
+        }
         
         Joukkue lumo = new Joukkue(), sirius = new Joukkue();
         lumo.rekisteroi();
@@ -66,15 +111,19 @@ public class Rekisteri {
         try {
             rekisteri.lisaa(lumo);
             rekisteri.lisaa(sirius);
+            
+            for (int i = 0; i < rekisteri.getJoukkueita(); i++) {
+                Joukkue joukkue = rekisteri.annaJoukkue(i);
+                joukkue.tulosta(System.out);
+            }
+            
+            rekisteri.tallenna();
         } catch (SailoException e) {
             
             System.err.println(e.getMessage());
         }
         
-        for (int i = 0; i < rekisteri.getJoukkueita(); i++) {
-            Joukkue joukkue = rekisteri.annaJoukkue(i);
-            joukkue.tulosta(System.out);
-        }
+
 
     }
 

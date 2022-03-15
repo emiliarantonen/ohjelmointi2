@@ -52,6 +52,11 @@ public class JoukkueetController implements Initializable{
         Dialogs.showMessageDialog("Ei osaa vielä poistaa");
     }
     
+    @FXML
+    void handleHakuehto() {
+        Dialogs.showMessageDialog("Ei osaa vielä poistaa");
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         alusta();
@@ -219,24 +224,29 @@ public class JoukkueetController implements Initializable{
     public boolean avaa() {
         String uusinimi = RekisteriGUIController.kysyNimi(null, joukkueenNimi);
         if (uusinimi == null) return false;
-        //lueTiedosto(uusinimi);
+        lueTiedosto(uusinimi);
         return true;
     }
     
     /**
      * @param nimi -
      */
-//    protected void lueTiedosto(String nimi) {
-//        joukkueenNimi = nimi;
-//        setTitle("Kerho - " + joukkueenNimi);
-//        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
-//        // if (virhe != null) 
-//            Dialogs.showMessageDialog(virhe);
-//    }
-    
-//    private void setTitle(String title) {
-//        ModalController.getStage(hakuehto).setTitle(title);
-//    }
+    protected void lueTiedosto(String nimi) {
+        joukkueenNimi = nimi;
+        setTitle("Joukkue - " + joukkueenNimi);
+        
+        try {
+            rekisteri.lueTiedostosta(nimi);
+            hae(0);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog(e.getMessage());
+        }
+        
+    }
+   
+    private void setTitle(String title) {
+        ModalController.getStage(hakuehto).setTitle(title);
+    }
     
     /**
      * @return -
@@ -247,7 +257,11 @@ public class JoukkueetController implements Initializable{
     }
     
     private void tallenna() {
-        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
+        try {
+            rekisteri.tallenna();
+        }catch (SailoException e) {
+            Dialogs.showMessageDialog(e.getMessage());
+        }
     }
     
     

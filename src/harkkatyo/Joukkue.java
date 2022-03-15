@@ -2,6 +2,8 @@ package harkkatyo;
 
 import java.io.*;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
  * Joukkueen tiedot, jolle lisätään uusia kilpailuja
  * 
@@ -77,8 +79,26 @@ public class Joukkue {
     public int getIdNro() {
         return idNro;
     }
+    
+    private void setIdNro(int nro) {
+        idNro= nro;
+        if(idNro>= seuraavaNro) seuraavaNro = idNro +1;
+    }
+    
+    @Override
+    public String toString() {
+       return "" + getIdNro()+ "|" + joukkueenNimi;
+    }
 
-
+    /**
+     * @param rivi -
+     */
+    public void parse(String rivi) {
+        var sb = new StringBuilder(rivi);
+        setIdNro(Mjonot.erota(sb, '|', getIdNro()));
+        joukkueenNimi= Mjonot.erota(sb, '|', "Sirius");
+    }
+    
     /**
      * Testiohjelma joukkueelle.
      * @param args ei käytössä
@@ -93,5 +113,7 @@ public class Joukkue {
         sirius.tulosta(System.out);
 
     }
+
+
 
 }
