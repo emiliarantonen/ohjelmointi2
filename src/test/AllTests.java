@@ -11,10 +11,11 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    harkkatyo.test.KilpailuTest.class,
-    harkkatyo.test.KilpailutTest.class,
+    //harkkatyo.test.KilpailuTest.class,
+    //harkkatyo.test.KilpailutTest.class,
     harkkatyo.test.JoukkueetTest.class,
-    harkkatyo.test.JoukkueTest.class
+    //harkkatyo.test.JoukkueTest.class,
+    harkkatyo.test.RekisteriTest.class
     })
 
 public class AllTests {

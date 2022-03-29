@@ -207,15 +207,19 @@ public class JoukkueetController implements Initializable{
     
     /**
      * @param os -
-     * @param joukkue -
+     * @param joukkue --
      */
-    public void tulosta(PrintStream os, final Joukkue joukkue) {
+    public void tulosta(PrintStream os, final Joukkue joukkue)  {
         os.println("----------------------------------------------");
         joukkue.tulosta(os);
         os.println("----------------------------------------------");
-        List<Kilpailu> kilpailut = rekisteri.annaKilpailut(joukkue);   
-        for (Kilpailu kil:kilpailut)
-            kil.tulosta(os);  
+        try {
+            List<Kilpailu> kilpailut = rekisteri.annaKilpailut(joukkue);   
+            for (Kilpailu kil:kilpailut)
+                kil.tulosta(os);  
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Kilpailun hakemisessa ongelmia! " + ex.getMessage());
+        }  
     }
     
     /**

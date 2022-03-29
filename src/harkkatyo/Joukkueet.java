@@ -25,8 +25,25 @@ public class Joukkueet {
 
 
     /**
-     * @param joukkue -
-     * @throws SailoException -
+     * Lisää uuden joukkueen rekisteriin.  Ottaa joukkueen omistukseensa.
+     * @param joukkue lisätäävän jäsenen viite.  Huom tietorakenne muuttuu omistajaksi
+     * @throws SailoException jos tietorakenne on jo täynnä
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * Joukkueet joukkueet = new Joukkueet();
+     * Joukkue lumo = new Joukkue(), lumo1 = new Joukkue();
+     * joukkueet.getLkm() === 0;
+     * joukkueet.lisaa(lumo); joukkueet.getLkm() === 1;
+     * joukkueet.lisaa(lumo1); joukkueet.getLkm() === 2;
+     * joukkueet.anna(0) === lumo;
+     * joukkueet.anna(1) === lumo1;
+     * joukkueet.anna(1) == lumo === false;
+     * joukkueet.anna(1) == lumo1 === true;
+     * joukkueet.anna(2) === lumo; #THROWS IndexOutOfBoundsException 
+     * joukkueet.lisaa(lumo); joukkueet.getLkm() === 3;
+     * joukkueet.lisaa(lumo); joukkueet.getLkm() === 4;
+     * </pre>
      */
     public void lisaa(Joukkue joukkue) throws SailoException {
         if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
@@ -49,9 +66,39 @@ public class Joukkueet {
 
 
     /**
-     * Lukee joukkueen tiedostosta.  Kesken.
-     * @param hakemisto tiedoston hakemisto
+     * Lukee jäsenistön tiedostosta. 
+     * @param hakemisto tiedoston perusnimi
      * @throws SailoException jos lukeminen epäonnistuu
+     * 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.*;
+     * #import java.util.*;
+     * 
+     *  Joukkueet joukkueet = new Joukkueet();
+     *  Joukkue lumo = new Joukkue(), lumo1 = new Joukkue();
+     *  lumo.vastaaLumo();
+     *  lumo1.vastaaLumo();
+     *  String hakemisto = "Lumo";
+     *  String tiedNimi = hakemisto+"";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  File dir = new File(hakemisto);
+     *  dir.mkdir();
+     *  ftied.delete();
+     *  joukkueet.lueTiedostosta(tiedNimi); 
+     *  joukkueet.lisaa(lumo);
+     *  joukkueet.lisaa(lumo1);
+     *  joukkueet.tallenna(hakemisto);
+     *  joukkueet = new Joukkueet();            // Poistetaan vanhat luomalla uusi
+     *  joukkueet.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
+     *  joukkueet.lisaa(lumo1);
+     *  joukkueet.tallenna(hakemisto);
+     *  ftied.delete() === false;
+     *  File fbak = new File(tiedNimi+".bak");
+     *  fbak.delete() === false;
+     *  dir.delete() === false;
+     * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
         String tiedostonNimi = hakemisto + "/joukkueet.dat";
@@ -70,6 +117,84 @@ public class Joukkueet {
         }
     }
 
+    /**
+     * Luokka joukkueiden iteroimiseksi.
+     */
+    public class JoukkueetIterator implements Iterator<Joukkue> {
+        private int kohdalla = 0;
+
+
+        /**
+         * Onko olemassa vielä seuraavaa jäsentä
+         * @see java.util.Iterator#hasNext()
+         * @return true jos on vielä jäseniä
+         */
+        @Override
+        public boolean hasNext() {
+            return kohdalla < getLkm();
+        }
+
+
+        /**
+         * Annetaan seuraava jäsen
+         * @return seuraava jäsen
+         * @throws NoSuchElementException jos seuraava alkiota ei enää ole
+         * @see java.util.Iterator#next()
+         */
+        @Override
+        public Joukkue next() throws NoSuchElementException {
+            if ( !hasNext() ) throw new NoSuchElementException("Ei oo");
+            return anna(kohdalla++);
+        }
+
+
+        /**
+         * Tuhoamista ei ole toteutettu
+         * @throws UnsupportedOperationException aina
+         * @see java.util.Iterator#remove()
+         */
+        @Override
+        public void remove() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException("Me ei poisteta");
+        }
+    }
+
+
+    /**
+     * Palautetaan iteraattori jäsenistään.
+     * @return jäsen iteraattori
+     */
+    public Iterator<Joukkue> iterator() {
+        return new JoukkueetIterator();
+    }
+    
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
+     * @param hakuehto hakuehto 
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä jäsenistä 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *   Joukkueet joukkueet = new Joukkueet(); 
+     *   Joukkue lumo = new Joukkue(); 
+     *   lumo.parse("1|Lumo");
+     *   Joukkue lumo1 = new Joukkue(); 
+     *   lumo1.parse("2|Lumo"); 
+     *   joukkueet.lisaa(lumo); joukkueet.lisaa(lumo1); 
+     *   // TODO: toistaiseksi palauttaa kaikki jäsenet 
+     * </pre> 
+     */
+    @SuppressWarnings("unused")
+    public Collection<Joukkue> etsi(String hakuehto, int k) { 
+        Collection<Joukkue> loytyneet = new ArrayList<Joukkue>(); 
+        for (Joukkue joukkue : alkiot) { 
+            loytyneet.add(joukkue);  
+        } 
+        return loytyneet; 
+    }
+    
+    
 
     /**
      * Palauttaa joukkueiden lukumäärän
