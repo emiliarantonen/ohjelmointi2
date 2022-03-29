@@ -5,9 +5,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Test suite kerho-ohjelmalle
- * @author vesal
- * @version 3.1.2019
+ * Test suite rekisteri-ohjelmalle
+ * @author emiliarantonen ja mineanupponen
+ * @version 29.3.2022
  */
 @RunWith(Suite.class)
 @SuiteClasses({
