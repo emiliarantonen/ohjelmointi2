@@ -19,7 +19,13 @@ public class Joukkue {
 
     
     /**
-     * @return joukkuuen nimi
+     * @return joukkueen nimi
+     * @example
+     * <pre name="test">
+     *   Joukkue lumo = new Joukkue();
+     *   lumo.vastaaLumo();
+     *   lumo.getNimi() =R= "Lumo .*";
+     * </pre>
      */
     public String getNimi() {
         return joukkueenNimi;
