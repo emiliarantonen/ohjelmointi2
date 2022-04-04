@@ -24,8 +24,21 @@ public class Kilpailut {
     }
     
     /**
-     * @param tunnusNro ketä etsitään
-     * @return lista kilpailuista
+     * Haetaan kaikki joukkueen kilpailut
+     * @param tunnusNro joukkueen tunnusnumero jolle kilpailuja haetaan
+     * @return tietorakenne jossa viiteet löydetteyihin kilpailuihin
+     * @example
+     * <pre name="test">
+     * #import java.util.*;
+     * 
+     *  Kilpailut kil = new Kilpailut();
+     *  Kilpailu sm1 = new Kilpailu(1); kil.lisaa(sm1);
+     *  
+     *  List<Kilpailu> loytyneet;
+     *  loytyneet = kil.annaKilpailut(1);
+     *  loytyneet.size() === 1; 
+     *  loytyneet.get(0) == sm1 === true;
+     * </pre> 
      */
     public List<Kilpailu> annaKilpailut(int tunnusNro) {
         List<Kilpailu> etsityt=new ArrayList<Kilpailu>();
@@ -49,9 +62,33 @@ public class Kilpailut {
         }
     }
     
+    
     /**
-     * @param hakemisto -
-     * @throws SailoException -
+     * Lukee kilapilut tiedostosta.
+     * @param hakemisto tiedoston nimen alkuosa
+     * @throws SailoException jos lukeminen epäonnistuu
+     * 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Kilpailut kilpailut = new Kilpailut();
+     *  Kilpailu SM1 = new Kilpailu(); SM1.vastaaSMKisat(2);
+     *  Kilpailu SM2 = new Kilpailu(); SM2.vastaaSMKisat(1);
+     *  Kilpailu SM3 = new Kilpailu(); SM3.vastaaSMKisat(2); 
+     *  String tiedNimi = "koerekisteri";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  ftied.delete();
+     *  kilpailut.lueTiedostosta(tiedNimi); 
+     *  kilpailut.lisaa(SM1);
+     *  kilpailut.lisaa(SM2);
+     *  kilpailut.lisaa(SM3);
+     *  kilpailut.tallenna(tiedNimi);
+     *  kilpailut = new Kilpailut();
+     *  kilpailut.lueTiedostosta(tiedNimi);
+     *  kilpailut.lisaa(SM1);
+     *  kilpailut.tallenna(tiedNimi);
+     * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
         String tiedostonNimi = hakemisto + "/kilpailut.dat";

@@ -24,16 +24,13 @@ public class Joukkue {
      * <pre name="test">
      *   Joukkue lumo = new Joukkue();
      *   lumo.vastaaLumo();
-     *   lumo.getNimi() =R= "Lumo .*";
+     *   lumo.getNimi() =R= "Lumo";
      * </pre>
      */
     public String getNimi() {
         return joukkueenNimi;
     }
     
-    /**
-     * 
-     */
     public void vastaaLumo() {
         joukkueenNimi = "Lumo" ;
     }
@@ -62,12 +59,12 @@ public class Joukkue {
      * @example
      * <pre name="test">
      *   Joukkue lumo = new Joukkue();
-     *   lumo.getTunnusNro() === 0;
+     *   lumo.getIdNro() === 0;
      *   lumo.rekisteroi();
      *   Joukkue sirius = new Joukkue();
      *   sirius.rekisteroi();
-     *   int n1 = lumo.getTunnusNro();
-     *   int n2 = sirius.getTunnusNro();
+     *   int n1 = lumo.getIdNro();
+     *   int n2 = sirius.getIdNro();
      *   n1 === n2-1;
      * </pre>
      */
@@ -91,13 +88,40 @@ public class Joukkue {
         if(idNro>= seuraavaNro) seuraavaNro = idNro +1;
     }
     
+    /**
+     * Palauttaa joukkueen tiedot merkkijonona jonka voi tallentaa tiedostoon.
+     * @return joukkueen tolpilla erotetuilla merkkijonona 
+     * @example
+     * <pre name="test">
+     *   Joukkue joukkue = new Joukkue();
+     *   joukkue.parse("   3  |  Lumo   ");
+     *   joukkue.toString().startsWith("3|Lumo") === true; // 
+     * </pre>  
+     */
     @Override
     public String toString() {
        return "" + getIdNro()+ "|" + joukkueenNimi;
     }
 
     /**
-     * @param rivi -
+     * Selvitää joukkueen tiedot | erotellusta merkkijonosta
+     * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusNro.
+     * @param rivi josta jäsenen tiedot otetaan
+     * 
+     * @example
+     * <pre name="test">
+     *   Joukkue joukkue = new Joukkue();
+     *   joukkue.parse("   3  |  Lumo");
+     *   joukkue.getIdNro() === 3;
+     *   joukkue.toString().startsWith("3|Lumo") === true; // on enemmäkin kuin 3 kenttää, siksi loppu |
+     *
+     *   joukkue.rekisteroi();
+     *   int n = joukkue.getIdNro();
+     *   joukkue.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
+     *   joukkue.rekisteroi();           // ja tarkistetaan että seuraavalla kertaa tulee yhtä isompi
+     *   joukkued.getIdNro() === n+20+1;
+     *     
+     * </pre>
      */
     public void parse(String rivi) {
         var sb = new StringBuilder(rivi);

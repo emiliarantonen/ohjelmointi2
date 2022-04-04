@@ -129,7 +129,7 @@ public class Rekisteri {
      *  Kilpailu SM1 = new Kilpailu(); SM1.vastaaSMKisat(lumo1.getIdNro());
      *  Kilpailu SM2 = new Kilpailu(); SM2.vastaaSMKisat(lumo.getIdNro());
      *   
-     *  String hakemisto = "Lumo";
+     *  String hakemisto = "koerekisteri";
      *  File dir = new File(hakemisto);
      *  File ftied  = new File(hakemisto+"/joukkueet.dat");
      *  File fhtied = new File(hakemisto+"/kilailut.dat");

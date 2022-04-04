@@ -63,7 +63,19 @@ public class Kilpailu {
       }
        
     /**
-     * @return - 
+     * Antaa kilpailulle seuraavan rekisterinumeron.
+     * @return kilpailun uusi tunnus_nro
+     * @example
+     * <pre name="test">
+     *   Kilpailu SM1 = new Kilpailu();
+     *   SM1.getTunnusNro() === 0;
+     *   SM1.rekisteroi();
+     *   Kilpailu SM2 = new Kilpailu();
+     *   SM2.rekisteroi();
+     *   int n1 = SM1.getTunnusNro();
+     *   int n2 = SM2.getTunnusNro();
+     *   n1 === n2-1;
+     * </pre>
      */
     public int rekisteroi() {
         tunnusNro = seuraavaNro;
@@ -116,7 +128,16 @@ public class Kilpailu {
     }
 
     /**
-     * @param s -
+     * Selvitää kilpailun tiedot | erotellusta merkkijonosta.
+     * Pitää huolen että seuraavaNro on suurempi kuin tuleva tunnusnro.
+     * @param s josta kilpailun tiedot otetaan
+     * @example
+     * <pre name="test">
+     *   Kilpailu kilpailu = new Kilpailu();
+     *   kilpailu.parse("   0   |  3  |   SM-kilpailut  ");
+     *   kilpailu.getTunnusNro() === 0;
+     *   kilpailu.toString().startsWith("0|3|SM-kilpailut|") === true;
+     * </pre>
      */
     public void parse(String s) {
         StringBuffer sb = new StringBuffer(s);
@@ -130,6 +151,17 @@ public class Kilpailu {
         
     }
     
+    
+    /**
+     * Palauttaa kilpailun tiedot merkkijonona jonka voi tallentaa tiedostoon.
+     * @return kilpailu tolpilla eroteltuna merkkijonona 
+     * @example
+     * <pre name="test">
+     *   Kilpailu kil = new Kilpailu();
+     *   kil.parse("   0   |  1  |   SM-kilpailu  | 2020 ");
+     *   kil.toString().startsWith("0|1|SM-kilpailu|2020|") === true;
+     * </pre>
+     */
     @Override
     public String toString() {
         return ""+ getTunnusNro() + "|"+ idNro+"|"+kilpailu +"|" + vuosi +"|"+sarja+"|"+pisteet+"|"+sijoitus;
