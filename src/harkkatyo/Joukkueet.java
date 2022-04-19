@@ -27,10 +27,8 @@ public class Joukkueet {
     /**
      * Lisää uuden joukkueen rekisteriin.  Ottaa joukkueen omistukseensa.
      * @param joukkue lisätäävän jäsenen viite.  Huom tietorakenne muuttuu omistajaksi
-     * @throws SailoException jos tietorakenne on jo täynnä
      * @example
      * <pre name="test">
-     * #THROWS SailoException 
      * Joukkueet joukkueet = new Joukkueet();
      * Joukkue lumo = new Joukkue(), lumo1 = new Joukkue();
      * joukkueet.getLkm() === 0;
@@ -45,8 +43,8 @@ public class Joukkueet {
      * joukkueet.lisaa(lumo); joukkueet.getLkm() === 4;
      * </pre>
      */
-    public void lisaa(Joukkue joukkue) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
+    public void lisaa(Joukkue joukkue) {
+        if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20);
         alkiot[lkm] = joukkue;
         lkm++;
     }
@@ -247,9 +245,6 @@ public class Joukkueet {
             joukkueet.lisaa(lumo);
             joukkueet.lisaa(sirius);
 
-
-        } catch (SailoException ex) {
-            System.err.println(ex.getMessage());
         } catch (IndexOutOfBoundsException e) {
             System.err.println(e.getMessage());
         }

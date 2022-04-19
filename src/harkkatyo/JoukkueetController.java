@@ -158,7 +158,7 @@ public class JoukkueetController implements Initializable{
         hae(uusi.getIdNro());
     }
     
-    /**
+    /**git
      * 
      */
     public void lisaaKilpailu() { 
