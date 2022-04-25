@@ -9,10 +9,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import fi.jyu.mit.fxgui.*;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -34,6 +36,7 @@ public class JoukkueetController implements Initializable{
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
     @FXML private TextField hakuehto;
     @FXML private ScrollPane panelJoukkue;
+    @FXML StringGrid<Kilpailu> tableKilpailut;
     
     private String joukkueenNimi = "Lumo";
 
@@ -184,13 +187,10 @@ public class JoukkueetController implements Initializable{
     }
 
     
-    private void alusta() {
-        panelJoukkue.setContent(areaJoukkue);
-        areaJoukkue.setFont(new Font("Courier New", 12));
-        panelJoukkue.setFitToHeight(true);
-        
+    private void alusta() {       
         chooserJoukkueet.clear();
         chooserJoukkueet.addSelectionListener(e -> naytaJoukkue());
+        
  
     }
     
@@ -203,6 +203,25 @@ public class JoukkueetController implements Initializable{
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaJoukkue)) {
             tulosta(os,joukkueKohdalla);  
         }
+        naytaKilpailut(joukkueKohdalla);
+    }
+    
+    /**
+     * näytetään joukkueen kilpailut
+     * @param joukkue jolle etsitään kilpailuja
+     */
+    private void naytaKilpailut(Joukkue joukkue) {
+        tableKilpailut.clear();
+        if (joukkue==null) return;
+        List<Kilpailu> kilpailut = rekisteri.annaKilpailut(joukkue);
+        if (kilpailut.size()==0)return;
+        for (Kilpailu kil : kilpailut)
+            naytaKilpailu(kil);
+    }
+    
+    private void naytaKilpailu(Kilpailu kil) {
+        String[] rivi = kil.toString().split("\\|");
+        tableKilpailut.add(kil, rivi[2], rivi[3], rivi[4], rivi[5], rivi[6]);
     }
     
     /**
@@ -217,7 +236,7 @@ public class JoukkueetController implements Initializable{
             List<Kilpailu> kilpailut = rekisteri.annaKilpailut(joukkue);   
             for (Kilpailu kil:kilpailut)
                 kil.tulosta(os);  
-        } catch (SailoException ex) {
+        } catch (Exception ex) {
             Dialogs.showMessageDialog("Kilpailun hakemisessa ongelmia! " + ex.getMessage());
         }  
     }

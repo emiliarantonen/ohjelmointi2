@@ -39,12 +39,23 @@ public class Kilpailu {
             
     }
     
+    /**
+     * @param nro -
+     */
     public Kilpailu(int nro) {
         this.idNro = nro;
     }
     
     public Kilpailu() {
         //
+    }
+    
+    public int getKenttia() {
+        return 7;
+    }
+    
+    public int ekaKentta() {
+        return 2;
     }
 
     /**
@@ -100,6 +111,66 @@ public class Kilpailu {
     private void setTunnusNro(int nro) {
         tunnusNro= nro;
         if(tunnusNro>= seuraavaNro) seuraavaNro = tunnusNro +1;
+    }
+    
+    public String aseta(int k, String jono) {
+        String tjono = jono.trim();
+        switch ( k ) {
+        case 0:
+            idNro=Integer.parseInt(tjono);
+            return null;
+        case 1:
+            tunnusNro=Integer.parseInt(tjono);
+            return null;
+        case 2:
+            kilpailu = tjono;
+            return null;
+        case 3:
+            vuosi = Integer.parseInt(tjono);;
+            return null;
+        case 4:
+            sarja = tjono;
+            return null;
+        case 5:
+            pisteet = Double.parseDouble(tjono);
+            return null;
+        case 6:
+            sijoitus = Integer.parseInt(tjono);
+            return null;
+        default:
+            return "ÄÄliö";
+        }
+    }
+    
+    public String getKysymys(int k) {
+        switch ( k ) {
+        case 0: return "Id nro";
+        case 1: return "tunnus nro";
+        case 2: return "Kilpailu";
+        case 3: return "Vuosi";
+        case 4: return "Sarja";
+        case 5: return "Pisteet";
+        case 6: return "Sijoitus";
+        default: return "Äääliö";
+        }
+    }
+    
+    /**
+     * Antaa k:n kentän sisällön merkkijonona
+     * @param k monenenko kentän sisältö palautetaan
+     * @return kentän sisältö merkkijonona
+     */
+    public String anna(int k) {
+        switch ( k ) {
+        case 0: return "" + idNro;
+        case 1: return "" + tunnusNro;
+        case 2: return "" + kilpailu;
+        case 3: return "" + vuosi;
+        case 4: return "" + sarja;
+        case 5: return "" + pisteet;
+        case 6: return "" + sijoitus;
+        default: return "Äääliö";
+        }
     }
     
     /**
@@ -165,5 +236,9 @@ public class Kilpailu {
     @Override
     public String toString() {
         return ""+ getTunnusNro() + "|"+ idNro+"|"+kilpailu +"|" + vuosi +"|"+sarja+"|"+pisteet+"|"+sijoitus;
+    }
+
+    public String getNimi() {
+        return kilpailu;
     }
 }

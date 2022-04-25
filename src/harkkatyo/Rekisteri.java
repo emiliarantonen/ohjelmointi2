@@ -77,7 +77,6 @@ public class Rekisteri {
      * Haetaan kaikki joukkueen kilpailut
      * @param joukkue joukkue jolle kilpailuja haetaan
      * @return tietorakenne jossa viiteet löydetteyihin kilpailuihin
-     * @throws SailoException jos tulee ongelmia
      * @example
      * <pre name="test">
      * #THROWS SailoException
@@ -106,7 +105,7 @@ public class Rekisteri {
      *  loytyneet.get(0) == SM3 === true;
      * </pre> 
      */
-    public List<Kilpailu> annaKilpailut(Joukkue joukkue) throws SailoException{
+    public List<Kilpailu> annaKilpailut(Joukkue joukkue){
         return kilpailut.annaKilpailut(joukkue.getIdNro());
     }
     
