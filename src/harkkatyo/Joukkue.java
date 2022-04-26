@@ -11,7 +11,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @version 14.2.2022
  *
  */
-public class Joukkue {
+public class Joukkue implements Cloneable, Tietue{
     
     private int idNro;
     private String joukkueenNimi = "";
@@ -142,6 +142,42 @@ public class Joukkue {
         lumo.tulosta(System.out);
         sirius.tulosta(System.out);
 
+    }
+
+    @Override
+    public int getKenttia() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int ekaKentta() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getKysymys(int k) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String anna(int k) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String aseta(int k, String s) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Tietue clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 

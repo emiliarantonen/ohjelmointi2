@@ -12,15 +12,22 @@ import java.util.*;
  * @version 8.3.2022
  *
  */
-public class Kilpailut {
+public class Kilpailut implements Iterable<Kilpailu> {
     
-    private final Collection<Kilpailu> alkiot = new ArrayList<Kilpailu> ();
+    private final Collection<Kilpailu> alkiot1 = new ArrayList<Kilpailu> ();
+    private Kilpailu alkiot[]=new Kilpailu[100];
+    private int lkm=0;
+    private boolean muutettu=false;
     
     /**
      * @param kil lisättävä kilpailu
+     * @throws SailoException -
      */
-    public void lisaa(Kilpailu kil) {
-        alkiot.add(kil);
+    public void lisaa(Kilpailu kil) throws SailoException {
+        if ( lkm >= alkiot.length ) throw new SailoException("Liikaa alkioita");
+        alkiot[lkm] = kil;
+        lkm++;
+        muutettu = true;
     }
     
     /**
@@ -107,6 +114,18 @@ public class Kilpailut {
         }
     }
 
+    public void korvaaTaiLisaa(Kilpailu kilpailu) throws SailoException {
+        int id = kilpailu.getTunnusNro();
+        for (int i = 0; i < lkm; i++) {
+            if ( alkiot[i].getTunnusNro() == id ) {
+                alkiot[i] = kilpailu;
+                muutettu = true;
+                return;
+            }
+        }
+        lisaa(kilpailu);
+    }
+    
     /**
      * @param args ei käytössä
      */
@@ -127,10 +146,15 @@ public class Kilpailut {
         Kilpailu SM4 = new Kilpailu();
         SM4.vastaaSMKisat(2);
 
-        kilpailut.lisaa(SM1);
-        kilpailut.lisaa(SM2);
-        kilpailut.lisaa(SM3);
-        kilpailut.lisaa(SM4);
+        try {
+            kilpailut.lisaa(SM1);
+            kilpailut.lisaa(SM2);
+            kilpailut.lisaa(SM3);
+            kilpailut.lisaa(SM4);
+        } catch (SailoException e1) {
+            System.out.println(e1.getMessage());
+        }
+        
 
         System.out.println("============= Kilpailut testi =================");
 
@@ -147,6 +171,11 @@ public class Kilpailut {
         } catch (SailoException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Iterator<Kilpailu> iterator() {
+        return alkiot1.iterator();
     }
 
 }

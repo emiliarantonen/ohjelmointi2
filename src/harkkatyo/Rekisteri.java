@@ -42,8 +42,9 @@ public class Rekisteri {
     
     /**
      * @param kilpailu -
+     * @throws SailoException -
      */
-    public void lisaa(Kilpailu kilpailu) {
+    public void lisaa(Kilpailu kilpailu) throws SailoException {
         kilpailut.lisaa(kilpailu);
     }
     
@@ -173,6 +174,10 @@ public class Rekisteri {
         }
         
         if ( !"".equals(virhe)) throw new SailoException(virhe);
+    }
+    
+    public void korvaaTaiLisaa(Kilpailu kilpailu) throws SailoException { 
+        kilpailut.korvaaTaiLisaa(kilpailu); 
     }
     
     /**

@@ -77,17 +77,17 @@ public class LisaaKilpailu implements ModalControllerInterface<Kilpailu>,Initial
     }
 
     
-    public static TextField[] luoKentat(GridPane gridJasen) {
-        gridJasen.getChildren().clear();
+    public static TextField[] luoKentat(GridPane gridKilpailu) {
+        gridKilpailu.getChildren().clear();
         TextField[] edits = new TextField[apukilpailu.getKenttia()];
         
         for (int i=0, k = apukilpailu.ekaKentta(); k < apukilpailu.getKenttia(); k++, i++) {
             Label label = new Label(apukilpailu.getKysymys(k));
-            gridJasen.add(label, 0, i);
+            gridKilpailu.add(label, 0, i);
             TextField edit = new TextField();
             edits[k] = edit;
             edit.setId("e"+k);
-            gridJasen.add(edit, 1, i);
+            gridKilpailu.add(edit, 1, i);
         }
         return edits;
     }
@@ -147,6 +147,23 @@ public class LisaaKilpailu implements ModalControllerInterface<Kilpailu>,Initial
     public void handleShown() {
         // TODO Auto-generated method stub
         
+    }
+    
+    /**
+     * Luodaan jäsenen kysymisdialogi ja palautetaan sama tietue muutettuna tai null
+     * TODO: korjattava toimimaan
+     * @param modalityStage mille ollaan modaalisia, null = sovellukselle
+     * @param oletus mitä dataan näytetään oletuksena
+     * @param kentta mikä kenttä saa fokuksen kun näytetään
+     * @return null jos painetaan Cancel, muuten täytetty tietue
+     */
+    public static Kilpailu kysyKilpailu(Stage modalityStage, Kilpailu oletus, int kentta) {
+        return ModalController.<Kilpailu, LisaaKilpailu>showModal(
+                    LisaaKilpailu.class.getResource("LisaaKilpailu.fxml"),
+                    "Rekisteri",
+                    modalityStage, oletus,
+                    ctrl -> ctrl.setKentta(kentta) 
+                );
     }
    
 

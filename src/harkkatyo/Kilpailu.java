@@ -17,7 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * @version 1.3.2022
  *
  */
-public class Kilpailu {
+public class Kilpailu implements Cloneable, Tietue{
     private int idNro;
     private int tunnusNro;
     private String kilpailu;
@@ -39,9 +39,6 @@ public class Kilpailu {
             
     }
     
-    /**
-     * @param nro -
-     */
     public Kilpailu(int nro) {
         this.idNro = nro;
     }
@@ -50,10 +47,12 @@ public class Kilpailu {
         //
     }
     
+    @Override
     public int getKenttia() {
         return 7;
     }
     
+    @Override
     public int ekaKentta() {
         return 2;
     }
@@ -113,6 +112,7 @@ public class Kilpailu {
         if(tunnusNro>= seuraavaNro) seuraavaNro = tunnusNro +1;
     }
     
+    @Override
     public String aseta(int k, String jono) {
         String tjono = jono.trim();
         switch ( k ) {
@@ -142,6 +142,7 @@ public class Kilpailu {
         }
     }
     
+    @Override
     public String getKysymys(int k) {
         switch ( k ) {
         case 0: return "Id nro";
@@ -160,6 +161,8 @@ public class Kilpailu {
      * @param k monenenko kentän sisältö palautetaan
      * @return kentän sisältö merkkijonona
      */
+
+    @Override
     public String anna(int k) {
         switch ( k ) {
         case 0: return "" + idNro;
@@ -240,5 +243,12 @@ public class Kilpailu {
 
     public String getNimi() {
         return kilpailu;
+    }
+    
+    @Override
+    public Kilpailu clone() throws CloneNotSupportedException {
+        Kilpailu uusi;
+        uusi = (Kilpailu) super.clone();
+        return uusi;
     }
 }

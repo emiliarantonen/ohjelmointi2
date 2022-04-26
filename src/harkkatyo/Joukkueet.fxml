@@ -17,11 +17,12 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="411.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="harkkatyo.JoukkueetController">
    <bottom>
-      <SplitPane dividerPositions="0.15802675585284282, 0.3302675585284281" prefHeight="31.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.15802675585284282, 0.3302675585284281, 0.5" prefHeight="31.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <items>
             <TextField />
             <Button mnemonicParsing="false" onAction="#handleLisaaJoukkue" text="Lisää joukkue" />
             <Button mnemonicParsing="false" onAction="#handlePoistaJoukkue" text="Poista joukkue" />
+            <Label fx:id="labelVirhe" />
          </items>
       </SplitPane>
    </bottom>
@@ -64,7 +65,7 @@
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleLisaaKilpailu" text="Lisää kilpailu" />
-                  <MenuItem mnemonicParsing="false" text="Muokkaa kilpailua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaKilpailua" text="Muokkaa kilpailua" />
                   <MenuItem mnemonicParsing="false" text="Poista kilpailu" />
             </items>
           </Menu>
