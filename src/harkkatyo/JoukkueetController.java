@@ -246,7 +246,7 @@ public class JoukkueetController implements Initializable{
     private void alusta() {       
         chooserJoukkueet.clear();
         chooserJoukkueet.addSelectionListener(e -> naytaJoukkue());
-        edits = KilpailuTietue.luoKentat(gridKilpailu, new Kilpailu()); 
+        edits = KilpailuTietue.luoKentat(gridKilpailu, apukilpailu); 
         for (TextField edit: edits)  
             if ( edit != null ) {  
                 edit.setEditable(false);  

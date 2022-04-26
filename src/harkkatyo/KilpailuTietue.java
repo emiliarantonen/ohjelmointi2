@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class KilpailuTietue <TYPE extends Tietue> implements ModalControllerInterface<TYPE>,Initializable {
     
     @FXML private GridPane gridTietue;
+    @FXML private ScrollPane panelTietue;
     @FXML private Label labelVirhe;
     
     @Override
@@ -56,7 +57,9 @@ public class KilpailuTietue <TYPE extends Tietue> implements ModalControllerInte
         gridTietue.getChildren().clear();
         TextField[] edits = new TextField[aputietue.getKenttia()];
         
-        for (int i=0, k = aputietue.ekaKentta(); k < aputietue.getKenttia(); k++, i++) {
+        gridTietue.add(aputietue.getKysymys(1), 0, 0);
+        
+        for (int i=1, k = aputietue.ekaKentta(); k < aputietue.getKenttia(); k++, i++) {
             Label label = new Label(aputietue.getKysymys(k));
             gridTietue.add(label, 0, i);
             TextField edit = new TextField();
@@ -100,7 +103,7 @@ public class KilpailuTietue <TYPE extends Tietue> implements ModalControllerInte
         for (TextField edit : edits)
             if ( edit != null )
                 edit.setOnKeyReleased( e -> kasitteleMuutosTietueeseen((TextField)(e.getSource())));
-        // panelTietue.setFitToHeight(true);
+        panelTietue.setFitToHeight(true);
     }
     
     
