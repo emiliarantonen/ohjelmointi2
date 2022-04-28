@@ -130,7 +130,7 @@ public class Joukkue implements Cloneable, Tietue{
     public void parse(String rivi) {
         var sb = new StringBuilder(rivi);
         setIdNro(Mjonot.erota(sb, '|', getIdNro()));
-        joukkueenNimi= Mjonot.erota(sb, '|', "Sirius");
+        joukkueenNimi= Mjonot.erota(sb, '|', getNimi());
     }
     
     public boolean equals(Joukkue joukkue) {
@@ -214,15 +214,20 @@ public class Joukkue implements Cloneable, Tietue{
      * @param args ei käytössä
      */
     public static void main(String args[]) {
-        Joukkue lumo = new Joukkue(), sirius = new Joukkue();
+        Joukkue lumo = new Joukkue();
         lumo.rekisteroi();
-        sirius.rekisteroi();
+     
         lumo.vastaaLumo();
-        sirius.vastaaLumo();
+        
         lumo.tulosta(System.out);
-        sirius.tulosta(System.out);
+       
 
     }
+
+    public void setNimi(String s) {
+        joukkueenNimi = s;
+    }
+
     
 
 }

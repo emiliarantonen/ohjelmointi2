@@ -36,7 +36,7 @@
                <GridPane.margin>
                   <Insets left="25.0" />
                </GridPane.margin></Label>
-            <Label text="Anna joukkueen nimi" GridPane.rowIndex="4">
+            <Label text="Anna laji" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="30.0" />
                </GridPane.margin></Label>

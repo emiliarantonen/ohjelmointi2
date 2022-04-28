@@ -117,7 +117,7 @@ public class Joukkueet implements Iterable<Joukkue>{
      * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        String tiedostonNimi = hakemisto + "/joukkueet.dat";
+        String tiedostonNimi =hakemisto + "/joukkueet.dat";
         File ftied = new File(tiedostonNimi);
         
         try (Scanner fi = new Scanner(new FileInputStream(ftied))){
@@ -227,6 +227,18 @@ public class Joukkueet implements Iterable<Joukkue>{
      * @throws SailoException -
      */
     public void tallenna(String hakemisto) throws SailoException {
+        
+//        File ftied = new File(hakemisto + "/kilpailut.dat");
+//        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))){
+//            for (Kilpailu kil: alkiot) {
+//                  fo.println(kil.toString());
+//            }
+//        } catch (FileNotFoundException ex ) {
+//            throw new SailoException("Tiedosto "+ ftied.getAbsolutePath()+ " ei aukea");
+//        }
+//        
+        
+        
         if ( !muutettu ) return;
 
         File fbak = new File(getBakNimi());
@@ -293,20 +305,18 @@ public class Joukkueet implements Iterable<Joukkue>{
         Joukkueet joukkueet = new Joukkueet();
         
         try {
-            joukkueet.lueTiedostosta("rekisteri");
+            joukkueet.lueTiedostosta("Lumo");
         } catch (SailoException ex) {
             System.err.println(ex.getMessage());
         }
         
-        Joukkue lumo = new Joukkue(), sirius = new Joukkue();
+        Joukkue lumo = new Joukkue();
         lumo.rekisteroi();
         lumo.vastaaLumo();
-        sirius.rekisteroi();
 
 
         try {
             joukkueet.lisaa(lumo);
-            joukkueet.lisaa(sirius);
 
         } catch (IndexOutOfBoundsException e) {
             System.err.println(e.getMessage());

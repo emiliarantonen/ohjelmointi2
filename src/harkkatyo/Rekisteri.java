@@ -14,7 +14,7 @@ public class Rekisteri {
     private Joukkueet joukkueet = new Joukkueet();
     private Kilpailut kilpailut = new Kilpailut();
     
-    private String hakemisto="rekisteri";
+    private String hakemisto="Lumo";
 
    
     /**
@@ -192,15 +192,13 @@ public class Rekisteri {
             System.out.println(ex.getMessage());
         }
         
-        Joukkue lumo = new Joukkue(), sirius = new Joukkue();
+        Joukkue lumo = new Joukkue();
         lumo.rekisteroi();
-        sirius.rekisteroi();
         lumo.vastaaLumo();
-        sirius.vastaaLumo();
-        
+
         try {
             rekisteri.lisaa(lumo);
-            rekisteri.lisaa(sirius);
+            
             
             for (int i = 0; i < rekisteri.getJoukkueita(); i++) {
                 Joukkue joukkue = rekisteri.annaJoukkue(i);
@@ -211,7 +209,7 @@ public class Rekisteri {
             Collection<Joukkue> joukkueet = rekisteri.etsi("", -1);
             int i = 0;
             for (Joukkue joukkue: joukkueet) {
-                System.out.println("Jäsen paikassa: " + i);
+                System.out.println("Joukkue paikassa: " + i);
                 joukkue.tulosta(System.out);
                 List<Kilpailu> loytyneet = rekisteri.annaKilpailut(joukkue);
                 for (Kilpailu kilpailu : loytyneet)

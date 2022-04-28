@@ -16,8 +16,9 @@ import fi.jyu.mit.fxgui.ModalControllerInterface;
  */
 public class RekisteriGUIController implements ModalControllerInterface<String>{
     
-    
     @FXML private TextField textVastaus;
+    
+    
     private String vastaus = null;
 
     /**
@@ -30,7 +31,7 @@ public class RekisteriGUIController implements ModalControllerInterface<String>{
      */
     @FXML private void handleHaeJoukkue() {
         //Dialogs.showMessageDialog("Ei osata vielä lisätä");
-        //ModalController.showModal(RekisteriGUIController.class.getResource("Joukkue.fxml"), "Joukkue", null, "");
+        //ModalController.showModal(RekisteriGUIController.class.getResource("Joukkueet.fxml"), "Joukkue", null, "");
         vastaus = textVastaus.getText();
         ModalController.closeStage(textVastaus);
         

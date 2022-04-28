@@ -143,6 +143,13 @@ public class Kilpailu implements Cloneable, Tietue{
                     return "h/vko: Ei kokonaisluku ("+tjono+")";
                 }
                 return null;
+            case 6:
+                try {
+                    sijoitus = Mjonot.erotaEx(sb, '§', sijoitus);
+                } catch (NumberFormatException ex) {
+                    return "h/vko: Ei kokonaisluku ("+tjono+")";
+                }
+                return null;
 
             default:
                 return "Väärä kentän indeksi";

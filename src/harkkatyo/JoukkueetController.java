@@ -46,6 +46,7 @@ public class JoukkueetController implements Initializable{
     @FXML private GridPane gridTietue;
     @FXML private ComboBoxChooser<String> cbKentat;
     @FXML private Label labelVirhe;
+    @FXML private TextField textJoukkueenNimi;
     
     private String joukkueenNimi = "Lumo";
 
@@ -172,7 +173,9 @@ public class JoukkueetController implements Initializable{
     private void uusiJoukkue() {
         Joukkue uusi = new Joukkue();
         uusi.rekisteroi();
-        uusi.vastaaLumo();
+        String s = textJoukkueenNimi.getText();
+        uusi.setNimi(s);
+        textJoukkueenNimi.clear();
         try {
             rekisteri.lisaa(uusi);
         } catch (SailoException e) {
@@ -201,7 +204,7 @@ public class JoukkueetController implements Initializable{
             uusi.rekisteroi();
             rekisteri.lisaa(uusi);
             naytaKilpailut(joukkueKohdalla);
-            tableKilpailut.selectRow(1000);
+            //tableKilpailut.selectRow(1000);
             //hae(uusi.getTunnusNro());
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());

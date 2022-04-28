@@ -19,7 +19,7 @@
    <bottom>
       <SplitPane dividerPositions="0.15802675585284282, 0.3302675585284281, 0.5" prefHeight="31.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <items>
-            <TextField />
+            <TextField fx:id="textJoukkueenNimi" />
             <Button mnemonicParsing="false" onAction="#handleLisaaJoukkue" text="Lisää joukkue" />
             <Button mnemonicParsing="false" onAction="#handlePoistaJoukkue" text="Poista joukkue" />
             <Label fx:id="labelVirhe" />
