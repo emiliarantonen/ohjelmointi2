@@ -43,7 +43,7 @@ public class JoukkueetController implements Initializable{
     @FXML private TextField hakuehto;
     @FXML private ScrollPane panelJoukkue;
     @FXML StringGrid<Kilpailu> tableKilpailut;
-    @FXML private GridPane gridKilpailu;
+    @FXML private GridPane gridTietue;
     @FXML private ComboBoxChooser<String> cbKentat;
     @FXML private Label labelVirhe;
     
@@ -127,7 +127,7 @@ public class JoukkueetController implements Initializable{
     }
     
     @FXML private void handleMuokkaaKilpailua() {
-        ModalController.showModal(JoukkueetController.class.getResource("LisaaKilpailu.fxml"), "Kilpailut", null, "");
+        ModalController.showModal(JoukkueetController.class.getResource("KilpailuTietue.fxml"), "Kilpailut", null, "");
     }
    
     
@@ -141,6 +141,7 @@ public class JoukkueetController implements Initializable{
     private TextArea areaJoukkue = new TextArea();
     private TextField edits[]; 
     private static Kilpailu apukilpailu = new Kilpailu();
+    private static Joukkue apujoukkue = new Joukkue();
     int kentta=0;
     
     private void apua() {
@@ -183,6 +184,7 @@ public class JoukkueetController implements Initializable{
             }
         }
         hae(uusi.getIdNro());
+
     }
    
     
@@ -193,7 +195,7 @@ public class JoukkueetController implements Initializable{
     public void lisaaKilpailu() throws SailoException { 
         if ( joukkueKohdalla == null ) return;  
         try {
-            Kilpailu uusi = new Kilpailu();
+            Kilpailu uusi = new Kilpailu(joukkueKohdalla.getIdNro());
             uusi = KilpailuTietue.kysyTietue(null, uusi, 1);      
             if ( uusi == null ) return;
             uusi.rekisteroi();
@@ -207,29 +209,39 @@ public class JoukkueetController implements Initializable{
     }
     
     protected void hae(int nro) {
-        int k = cbKentat.getSelectionModel().getSelectedIndex();
-        String ehto = hakuehto.getText(); 
-        if (k > 0 || ehto.length() > 0)
-            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k, ehto));
-        else
-            naytaVirhe(null);
-        
         chooserJoukkueet.clear();
 
         int index = 0;
-        Collection<Joukkue> joukkueet;
-        try {
-            joukkueet = rekisteri.etsi(ehto, k);
-            int i = 0;
-            for (Joukkue joukkue:joukkueet) {
-                if (joukkue.getIdNro() == nro) index = i;
-                chooserJoukkueet.add(joukkue.getNimi(), joukkue);
-                i++;
-            }
-        } catch (SailoException ex) {
-            Dialogs.showMessageDialog("Jäsenen hakemisessa ongelmia! " + ex.getMessage());
+        for (int i = 0; i < rekisteri.getJoukkueita(); i++) {
+            Joukkue Joukkue = rekisteri.annaJoukkue(i);
+            if (Joukkue.getIdNro() == nro) index = i;
+            chooserJoukkueet.add(Joukkue.getNimi(), Joukkue);
         }
         chooserJoukkueet.setSelectedIndex(index);
+
+//        int k = cbKentat.getSelectionModel().getSelectedIndex();
+//        String ehto = hakuehto.getText(); 
+//        if (k > 0 || ehto.length() > 0)
+//            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k, ehto));
+//        else
+//            naytaVirhe(null);
+//        
+//        chooserJoukkueet.clear();
+//
+//        int index = 0;
+//        Collection<Joukkue> joukkueet;
+//        try {
+//            joukkueet = rekisteri.etsi(ehto, k);
+//            int i = 0;
+//            for (Joukkue joukkue:joukkueet) {
+//                if (joukkue.getIdNro() == nro) index = i;
+//                chooserJoukkueet.add(joukkue.getNimi(), joukkue);
+//                i++;
+//            }
+//        } catch (SailoException ex) {
+//            Dialogs.showMessageDialog("Jäsenen hakemisessa ongelmia! " + ex.getMessage());
+//        }
+//        chooserJoukkueet.setSelectedIndex(index);
     }
     
     private void naytaVirhe(String virhe) {
@@ -245,14 +257,16 @@ public class JoukkueetController implements Initializable{
     
     private void alusta() {       
         chooserJoukkueet.clear();
-        chooserJoukkueet.addSelectionListener(e -> naytaJoukkue());
-        edits = KilpailuTietue.luoKentat(gridKilpailu, apukilpailu); 
-        for (TextField edit: edits)  
-            if ( edit != null ) {  
-                edit.setEditable(false);  
-                edit.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaa(getFieldId(e.getSource(),0)); });  
-                edit.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(edit,kentta));  
-            }    
+        chooserJoukkueet.addSelectionListener(e -> naytaJoukkue());  
+        
+//        edits = KilpailuTietue.luoKentat(gridTietue, new Kilpailu());  
+//        for (TextField edit: edits)  
+//            if ( edit != null ) {  
+//                edit.setEditable(false);  
+//                edit.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaa(getFieldId(e.getSource(),0)); });  
+//                edit.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(edit,kentta));
+//                edit.setOnKeyPressed( e -> {if ( e.getCode() == KeyCode.F2 ) muokkaa(kentta);}); 
+//            }
         // alustetaan harrastustaulukon otsikot 
         int eka = apukilpailu.ekaKentta(); 
         int lkm = apukilpailu.getKenttia(); 
@@ -261,7 +275,7 @@ public class JoukkueetController implements Initializable{
         tableKilpailut.initTable(headings); 
         tableKilpailut.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         tableKilpailut.setEditable(false); 
-        tableKilpailut.setPlaceholder(new Label("Ei vielä harrastuksia")); 
+        tableKilpailut.setPlaceholder(new Label("Ei vielä kilpailuja")); 
          
         // Tämä on vielä huono, ei automaattisesti muutu jos kenttiä muutetaan. 
         tableKilpailut.setColumnSortOrderNumber(1); 
@@ -308,6 +322,7 @@ public class JoukkueetController implements Initializable{
     }
     
     private void naytaJoukkue() {
+
         joukkueKohdalla = chooserJoukkueet.getSelectedObject();
 
         if (joukkueKohdalla == null) return;
@@ -326,6 +341,8 @@ public class JoukkueetController implements Initializable{
     private void naytaKilpailut(Joukkue joukkue) {
         tableKilpailut.clear();
         if (joukkue==null) return;
+       
+ 
         List<Kilpailu> kilpailut = rekisteri.annaKilpailut(joukkue);
         if (kilpailut.size()==0)return;
         for (Kilpailu kil : kilpailut)
@@ -338,8 +355,8 @@ public class JoukkueetController implements Initializable{
         for (int i=0, k=kil.ekaKentta(); k < kenttia; i++, k++) 
             rivi[i] = kil.anna(k); 
         tableKilpailut.add(kil,rivi);
-        KilpailuTietue.naytaTietue(edits, joukkueKohdalla);
-        naytaKilpailut(joukkueKohdalla);
+        //KilpailuTietue.naytaTietue(edits, joukkueKohdalla);
+        //naytaKilpailut(joukkueKohdalla);
     }
     
     /**

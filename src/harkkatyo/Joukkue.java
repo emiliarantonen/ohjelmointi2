@@ -16,7 +16,10 @@ public class Joukkue implements Cloneable, Tietue{
     private int idNro;
     private String joukkueenNimi = "";
     private static int seuraavaNro    = 1;
-
+    
+    public Joukkue() {
+        //
+    }
     
     /**
      * @return joukkueen nimi
@@ -27,6 +30,7 @@ public class Joukkue implements Cloneable, Tietue{
      *   lumo.getNimi() =R= "Lumo";
      * </pre>
      */
+    @Override
     public String getNimi() {
         return joukkueenNimi;
     }
@@ -129,6 +133,82 @@ public class Joukkue implements Cloneable, Tietue{
         joukkueenNimi= Mjonot.erota(sb, '|', "Sirius");
     }
     
+    public boolean equals(Joukkue joukkue) {
+        if ( joukkue == null ) return false;
+        for (int k = 0; k < getKenttia(); k++)
+            if ( !anna(k).equals(joukkue.anna(k)) ) return false;
+        return true;
+    }
+
+
+    @Override
+    public boolean equals(Object joukkue) {
+        if ( joukkue instanceof Joukkue ) return equals((Joukkue)joukkue);
+        return false;
+    }
+
+
+    @Override
+    public int hashCode() {
+        return idNro;
+    }
+    
+    @Override
+    public Joukkue clone() throws CloneNotSupportedException {
+        Joukkue uusi;
+        uusi = (Joukkue) super.clone();
+        return uusi;
+    }
+    
+
+    @Override
+    public int getKenttia() {
+        
+        return 2;
+    }
+
+    @Override
+    public int ekaKentta() {
+        
+        return 1;
+    }
+
+    @Override
+    public String getKysymys(int k) {
+        switch ( k ) {
+        case 0: return "Id nro";
+        case 1: return "Joukkueen nimi";
+        default: return "Olet ihana";
+        }
+    }
+
+    @Override
+    public String anna(int k) {
+        switch ( k ) {
+        case 0: return "" + idNro;
+        case 1: return "" + joukkueenNimi;
+        default:
+            return "Olet ihana";
+        }
+    }
+
+
+    @Override
+    public String aseta(int k, String jono) {
+        String tjono = jono.trim();
+        StringBuffer sb = new StringBuffer(tjono);
+        switch ( k ) {
+        case 0:
+            setIdNro(Mjonot.erota(sb, '§', getIdNro()));
+            return null;
+        case 1:
+            joukkueenNimi = tjono;
+            return null;
+        default:
+            return "Olet ihana";
+        }
+    }
+    
     /**
      * Testiohjelma joukkueelle.
      * @param args ei käytössä
@@ -143,43 +223,9 @@ public class Joukkue implements Cloneable, Tietue{
         sirius.tulosta(System.out);
 
     }
-
-    @Override
-    public int getKenttia() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int ekaKentta() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public String getKysymys(int k) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String anna(int k) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String aseta(int k, String s) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Tietue clone() throws CloneNotSupportedException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
+    
 
 }
+        
+
+

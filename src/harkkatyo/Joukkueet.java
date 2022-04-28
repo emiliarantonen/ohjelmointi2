@@ -9,11 +9,13 @@ import java.util.*;
  * @version 1.3.2022
  *
  */
-public class Joukkueet {
+public class Joukkueet implements Iterable<Joukkue>{
     private static final int Max_joukkueita = 1000;
     private int              lkm           = 0;
     private String           tiedostonNimi = "";
+    private String tiedostonPerusNimi = "joukkueet";
     private Joukkue          alkiot[]      = new Joukkue[Max_joukkueita];
+    private boolean muutettu=false;
 
 
     /**
@@ -47,8 +49,24 @@ public class Joukkueet {
         if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm+20);
         alkiot[lkm] = joukkue;
         lkm++;
+        muutettu=true;
     }
-
+    
+    /**
+     * @param joukkue -
+     * @throws SailoException -  
+     */
+    public void korvaaTaiLisaa(Joukkue joukkue) throws SailoException {
+        int id = joukkue.getIdNro();
+        for (int i = 0; i < lkm; i++) {
+            if ( alkiot[i].getIdNro() == id ) {
+                alkiot[i] = joukkue;
+                muutettu = true;
+                return;
+            }
+        }
+        lisaa(joukkue);
+    }
 
     /**
      * Palauttaa viitteen i:teen joukkueeseen.
@@ -162,6 +180,7 @@ public class Joukkueet {
      * Palautetaan iteraattori jäsenistään.
      * @return jäsen iteraattori
      */
+    @Override
     public Iterator<Joukkue> iterator() {
         return new JoukkueetIterator();
     }
@@ -208,17 +227,61 @@ public class Joukkueet {
      * @throws SailoException -
      */
     public void tallenna(String hakemisto) throws SailoException {
-        File ftied = new File(hakemisto + "/joukkueet.dat");
-        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))){
-            for (int i=0; i<getLkm(); i++) {
-                Joukkue joukkue = this.anna(i);
+        if ( !muutettu ) return;
+
+        File fbak = new File(getBakNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete(); // if .. System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimetä");
+
+        try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
+            fo.println(getKokoNimi());
+            fo.println(alkiot.length);
+            for (Joukkue joukkue : this) {
                 fo.println(joukkue.toString());
             }
-        } catch (FileNotFoundException ex ) {
-            throw new SailoException("Tiedosto "+ ftied.getAbsolutePath()+ " ei aukea");
+            //} catch ( IOException e ) { // ei heitä poikkeusta
+            //  throw new SailoException("Tallettamisessa ongelmia: " + e.getMessage());
+        } catch ( FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto " + ftied.getName() + " ei aukea");
+        } catch ( IOException ex ) {
+            throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
         }
+
+        muutettu = false;
     }
     
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return getTiedostonPerusNimi() + ".dat";
+    }
+    
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+    
+    /**
+     * Palauttaa Kerhon koko nimen
+     * @return Kerhon koko nimi merkkijononna
+     */
+    public String getKokoNimi() {
+        return tiedostonNimi;
+    }
+    
+    /**
+     * Palauttaa varakopiotiedoston nimen
+     * @return varakopiotiedoston nimi
+     */
+    public String getBakNimi() {
+        return tiedostonPerusNimi + ".bak";
+    }
     
 
     /**

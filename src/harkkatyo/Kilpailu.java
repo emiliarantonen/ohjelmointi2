@@ -115,32 +115,67 @@ public class Kilpailu implements Cloneable, Tietue{
     @Override
     public String aseta(int k, String jono) {
         String tjono = jono.trim();
-        switch ( k ) {
-        case 0:
-            idNro=Integer.parseInt(tjono);
-            return null;
-        case 1:
-            tunnusNro=Integer.parseInt(tjono);
-            return null;
-        case 2:
-            kilpailu = tjono;
-            return null;
-        case 3:
-            vuosi = Integer.parseInt(tjono);;
-            return null;
-        case 4:
-            sarja = tjono;
-            return null;
-        case 5:
-            pisteet = Double.parseDouble(tjono);
-            return null;
-        case 6:
-            sijoitus = Integer.parseInt(tjono);
-            return null;
-        default:
-            return "ÄÄliö";
+        StringBuffer sb = new StringBuffer(tjono);
+        switch (k) {
+            case 0:
+                setTunnusNro(Mjonot.erota(sb, '$', getTunnusNro()));
+                return null;
+            case 1:
+                idNro = Mjonot.erota(sb, '$', idNro);
+                return null;
+            case 2:
+                kilpailu = tjono;
+                return null;
+            case 3:
+                try {
+                    vuosi = Mjonot.erotaEx(sb, '§', vuosi);
+                } catch (NumberFormatException ex) {
+                    return "aloitusvuosi: Ei kokonaisluku ("+tjono+")";
+                }
+                return null;
+            case 4:
+                sarja = tjono;
+                return null;
+            case 5:
+                try {
+                    pisteet = Mjonot.erotaEx(sb, '§', pisteet);
+                } catch (NumberFormatException ex) {
+                    return "h/vko: Ei kokonaisluku ("+tjono+")";
+                }
+                return null;
+
+            default:
+                return "Väärä kentän indeksi";
         }
     }
+
+        
+//        switch ( k ) {
+//        case 0:
+//            idNro=Integer.parseInt(tjono);
+//            return null;
+//        case 1:
+//            tunnusNro=Integer.parseInt(tjono);
+//            return null;
+//        case 2:
+//            kilpailu = tjono;
+//            return null;
+//        case 3:
+//            vuosi = Integer.parseInt(tjono);;
+//            return null;
+//        case 4:
+//            sarja = tjono;
+//            return null;
+//        case 5:
+//            pisteet = Double.parseDouble(tjono);
+//            return null;
+//        case 6:
+//            sijoitus = Integer.parseInt(tjono);
+//            return null;
+//        default:
+//            return "ÄÄliö";
+//        }
+//    }
     
     @Override
     public String getKysymys(int k) {
@@ -241,6 +276,7 @@ public class Kilpailu implements Cloneable, Tietue{
         return ""+ getTunnusNro() + "|"+ idNro+"|"+kilpailu +"|" + vuosi +"|"+sarja+"|"+pisteet+"|"+sijoitus;
     }
 
+    @Override
     public String getNimi() {
         return kilpailu;
     }

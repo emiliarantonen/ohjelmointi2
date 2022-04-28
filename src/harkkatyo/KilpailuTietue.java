@@ -56,8 +56,7 @@ public class KilpailuTietue <TYPE extends Tietue> implements ModalControllerInte
     public static<TYPE extends Tietue> TextField[] luoKentat(GridPane gridTietue, TYPE aputietue) {
         gridTietue.getChildren().clear();
         TextField[] edits = new TextField[aputietue.getKenttia()];
-        
-        gridTietue.add(aputietue.getKysymys(1), 0, 0);
+       
         
         for (int i=1, k = aputietue.ekaKentta(); k < aputietue.getKenttia(); k++, i++) {
             Label label = new Label(aputietue.getKysymys(k));

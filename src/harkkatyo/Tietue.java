@@ -115,5 +115,8 @@ public interface Tietue {
     @Override
     public abstract String toString();
 
+
+    public abstract String getNimi();
+
 }
 

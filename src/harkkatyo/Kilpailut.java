@@ -14,8 +14,8 @@ import java.util.*;
  */
 public class Kilpailut implements Iterable<Kilpailu> {
     
-    private final Collection<Kilpailu> alkiot1 = new ArrayList<Kilpailu> ();
-    private Kilpailu alkiot[]=new Kilpailu[100];
+    private final List<Kilpailu> alkiot = new ArrayList<Kilpailu> ();
+    //private Kilpailu alkiot[]=new Kilpailu[100];
     private int lkm=0;
     private boolean muutettu=false;
     
@@ -24,9 +24,7 @@ public class Kilpailut implements Iterable<Kilpailu> {
      * @throws SailoException -
      */
     public void lisaa(Kilpailu kil) throws SailoException {
-        if ( lkm >= alkiot.length ) throw new SailoException("Liikaa alkioita");
-        alkiot[lkm] = kil;
-        lkm++;
+        alkiot.add(kil);
         muutettu = true;
     }
     
@@ -49,8 +47,11 @@ public class Kilpailut implements Iterable<Kilpailu> {
      */
     public List<Kilpailu> annaKilpailut(int tunnusNro) {
         List<Kilpailu> etsityt=new ArrayList<Kilpailu>();
-        for (Kilpailu kil : alkiot)
-            if (kil.getIdNro() == tunnusNro) etsityt.add(kil);
+        for (int i=0; i<getLkm(); i++)
+            if ( alkiot.get(i).getIdNro() == tunnusNro ) etsityt.add(alkiot.get(i));
+
+        //for (int i=0; i<lkm; i++)
+            //if (alkiot[i].getIdNro()== tunnusNro) etsityt.add(alkiot[i]);
         return etsityt;
     }
     
@@ -116,15 +117,20 @@ public class Kilpailut implements Iterable<Kilpailu> {
 
     public void korvaaTaiLisaa(Kilpailu kilpailu) throws SailoException {
         int id = kilpailu.getTunnusNro();
-        for (int i = 0; i < lkm; i++) {
-            if ( alkiot[i].getTunnusNro() == id ) {
-                alkiot[i] = kilpailu;
+        for (int i = 0; i < getLkm(); i++) {
+            if ( alkiot.get(i).getTunnusNro() == id ) {
+                alkiot.set(i,kilpailu);
                 muutettu = true;
                 return;
             }
         }
         lisaa(kilpailu);
     }
+    
+    public int getLkm() {
+        return alkiot.size();
+    }
+
     
     /**
      * @param args ei käytössä
@@ -175,7 +181,7 @@ public class Kilpailut implements Iterable<Kilpailu> {
 
     @Override
     public Iterator<Kilpailu> iterator() {
-        return alkiot1.iterator();
+        return alkiot.iterator();
     }
 
 }
