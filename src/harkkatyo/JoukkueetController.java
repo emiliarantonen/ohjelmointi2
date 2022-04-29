@@ -22,6 +22,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.PrinterJob;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
@@ -30,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.scene.web.WebEngine;
 import javafx.stage.Stage;
 
 /**
@@ -47,6 +49,7 @@ public class JoukkueetController implements Initializable{
     @FXML private ComboBoxChooser<String> cbKentat;
     @FXML private Label labelVirhe;
     @FXML private TextField textJoukkueenNimi;
+    @FXML private TextArea tulostusAlue;
     
     private String joukkueenNimi = "Lumo";
 
@@ -114,7 +117,10 @@ public class JoukkueetController implements Initializable{
      */
     @FXML
     public void handleTulosta() {
-        Dialogs.showMessageDialog("Tulostetaan, mutta ei osata vielä");
+        TulostusController tulostusCtrl = TulostusController.tulosta(null); 
+        tulostaValitut(tulostusCtrl.getTextArea());
+        //Dialogs.showMessageDialog("Tulostetaan, mutta ei osata vielä");
+
     }
     
     /** 
@@ -378,6 +384,21 @@ public class JoukkueetController implements Initializable{
             Dialogs.showMessageDialog("Kilpailun hakemisessa ongelmia! " + ex.getMessage());
         }  
     }
+    
+    /**
+     * Tulostaa listassa olevat jäsenet tekstialueeseen
+     * @param text alue johon tulostetaan
+     */
+    public void tulostaValitut(TextArea text) {
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
+            os.println("Tulostetaan joukkueiden kilpailut");
+            for (Joukkue joukkue: chooserJoukkueet.getObjects()) { 
+                tulosta(os, joukkue);
+                os.println("\n\n");
+            }
+        }
+    }
+
     
     /**
      * @return -
