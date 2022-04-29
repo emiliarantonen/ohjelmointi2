@@ -130,8 +130,25 @@ public class Kilpailut implements Iterable<Kilpailu> {
     public int getLkm() {
         return alkiot.size();
     }
-
     
+    public boolean poista(Kilpailu kilpailu) {
+        boolean ret = alkiot.remove(kilpailu);
+        if (ret) muutettu = true;
+        return ret;
+    }
+    
+    public int poistaJoukkueenKilpailut(int idNro) {
+        int n =0;
+        for (Iterator<Kilpailu> it = alkiot.iterator(); it.hasNext();) {
+            Kilpailu kil = it.next();
+            if ( kil.getTunnusNro() == idNro ) {
+                it.remove();
+                n++;
+            }
+        }
+        if (n > 0) muutettu = true;
+        return n;
+    }
     /**
      * @param args ei käytössä
      */

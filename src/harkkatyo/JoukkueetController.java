@@ -65,7 +65,14 @@ public class JoukkueetController implements Initializable{
 
     @FXML
     void handlePoistaJoukkue() {
-        Dialogs.showMessageDialog("Ei osaa vielä poistaa");
+        //Dialogs.showMessageDialog("Ei osaa vielä poistaa");
+        poistaJoukkue();
+    }
+    
+    @FXML
+    void handlePoistaKilpailu() {
+        //Dialogs.showMessageDialog("Ei osaa vielä poistaa");
+        poistaKilpailu();
     }
     
     @FXML
@@ -195,7 +202,17 @@ public class JoukkueetController implements Initializable{
         hae(uusi.getIdNro());
 
     }
-   
+    
+    private void poistaJoukkue() {
+        Joukkue joukkue = joukkueKohdalla;
+        if (joukkue==null) return;
+        if ( !Dialogs.showQuestionDialog("Poisto", "Poistetaanko joukkue: " + joukkue.getNimi(), "Kyllä", "Ei") )
+            return;
+        rekisteri.poista(joukkue);
+        int index = chooserJoukkueet.getSelectedIndex();
+        hae(0);
+        chooserJoukkueet.setSelectedIndex(index);
+    }
     
     /**git
      * @throws SailoException -
@@ -217,6 +234,19 @@ public class JoukkueetController implements Initializable{
         }          
     }
     
+     private void poistaKilpailu() {
+         int rivi = tableKilpailut.getRowNr();
+         if ( rivi < 0 ) return;
+         Kilpailu kilpailu = tableKilpailut.getObject();
+         if ( kilpailu == null ) return;
+         rekisteri.poistaKilpailu(kilpailu);
+         naytaKilpailut(joukkueKohdalla);
+         int kilpailuja = tableKilpailut.getItems().size(); 
+         if ( rivi >= kilpailuja ) rivi = kilpailuja -1;
+         tableKilpailut.getFocusModel().focus(rivi);
+         tableKilpailut.getSelectionModel().select(rivi);
+    }
+     
     protected void hae(int nro) {
         chooserJoukkueet.clear();
 

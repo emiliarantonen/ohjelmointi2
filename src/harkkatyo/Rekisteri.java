@@ -227,6 +227,16 @@ public class Rekisteri {
 
     }
 
+    public int poista(Joukkue joukkue) {
+        if (joukkue == null) return 0;
+        int ret = joukkueet.poista(joukkue.getIdNro());
+        kilpailut.poistaJoukkueenKilpailut(joukkue.getIdNro());
+        return ret;
+    }
+    
+    public void poistaKilpailu(Kilpailu kilpailu) {
+        kilpailut.poista(kilpailu);
+    }
 
         
     
