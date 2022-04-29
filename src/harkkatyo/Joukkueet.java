@@ -3,6 +3,8 @@ package harkkatyo;
 import java.io.*;
 import java.util.*;
 
+import fi.jyu.mit.ohj2.WildChars;
+
 /**
  * crc tietoja tähän
  * @author mineanupponen
@@ -241,12 +243,16 @@ public class Joukkueet implements Iterable<Joukkue>{
      *   // TODO: toistaiseksi palauttaa kaikki jäsenet 
      * </pre> 
      */
-    @SuppressWarnings("unused")
-    public Collection<Joukkue> etsi(String hakuehto, int k) { 
-        Collection<Joukkue> loytyneet = new ArrayList<Joukkue>(); 
-        for (Joukkue joukkue : alkiot) { 
-            loytyneet.add(joukkue);  
+    public Collection<Joukkue> etsi(String hakuehto, int k) {
+        String ehto = "*";
+        if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto;
+        int hk=k;
+        if (hk<0) hk=1;
+        List<Joukkue> loytyneet = new ArrayList<Joukkue>();
+        for (Joukkue joukkue : this) { 
+            if (WildChars.onkoSamat(joukkue.anna(hk), ehto)) loytyneet.add(joukkue);  
         } 
+        //Collections.sort(loytyneet, new Joukkue.Vertailija(hk));
         return loytyneet; 
     }
     
@@ -349,6 +355,8 @@ public class Joukkueet implements Iterable<Joukkue>{
         muutettu = true;
         return 1;
     }
+    
+
 
     /**
      * Testiohjelma jäsenistölle

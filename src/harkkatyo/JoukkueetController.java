@@ -23,13 +23,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.PrinterJob;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.stage.Stage;
@@ -76,10 +81,18 @@ public class JoukkueetController implements Initializable{
     }
     
     @FXML
+    void handleHakuehto(KeyEvent event) {
+        //
+        //Dialogs.showMessageDialog("lolololo");
+        hae(0);
+    }
+    
+    @FXML
     void handleHakuehto() {
         //Dialogs.showMessageDialog("Ei osaa vielä poistaa");
-        if ( joukkueKohdalla != null )
-            hae(joukkueKohdalla.getIdNro());
+//        if ( joukkueKohdalla != null )
+//            hae(joukkueKohdalla.getIdNro());
+        //hae(0);
 
     }
     
@@ -112,7 +125,10 @@ public class JoukkueetController implements Initializable{
     public void handleTallenna() {
         tallenna();
     }
-    
+    @FXML 
+    void handleSposti() {
+        asiakkaaseenYhteys();
+    }
     /**
      * 
      */
@@ -253,39 +269,31 @@ public class JoukkueetController implements Initializable{
     }
      
     protected void hae(int nro) {
+        int jnro=nro;
+        if ( jnro <=0) {
+            Joukkue kohdalla = joukkueKohdalla;
+            if (kohdalla != null) jnro = kohdalla.getIdNro();
+        }
+        int k = cbKentat.getSelectionModel().getSelectedIndex() + apujoukkue.ekaKentta();
+        String ehto = hakuehto.getText(); 
+        if (ehto.indexOf('*')<0)ehto = "*"+ ehto + "*";
+        
         chooserJoukkueet.clear();
 
         int index = 0;
-        for (int i = 0; i < rekisteri.getJoukkueita(); i++) {
-            Joukkue Joukkue = rekisteri.annaJoukkue(i);
-            if (Joukkue.getIdNro() == nro) index = i;
-            chooserJoukkueet.add(Joukkue.getNimi(), Joukkue);
+        Collection<Joukkue> joukkueet;
+        try {
+            joukkueet = rekisteri.etsi(ehto, k);
+            int i = 0;
+            for (Joukkue joukkue:joukkueet) {
+                if (joukkue.getIdNro() == nro) index = i;
+                chooserJoukkueet.add(joukkue.getNimi(), joukkue);
+                i++;
+            }
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Jäsenen hakemisessa ongelmia! " + ex.getMessage());
         }
         chooserJoukkueet.setSelectedIndex(index);
-
-//        int k = cbKentat.getSelectionModel().getSelectedIndex();
-//        String ehto = hakuehto.getText(); 
-//        if (k > 0 || ehto.length() > 0)
-//            naytaVirhe(String.format("Ei osata hakea (kenttä: %d, ehto: %s)", k, ehto));
-//        else
-//            naytaVirhe(null);
-//        
-//        chooserJoukkueet.clear();
-//
-//        int index = 0;
-//        Collection<Joukkue> joukkueet;
-//        try {
-//            joukkueet = rekisteri.etsi(ehto, k);
-//            int i = 0;
-//            for (Joukkue joukkue:joukkueet) {
-//                if (joukkue.getIdNro() == nro) index = i;
-//                chooserJoukkueet.add(joukkue.getNimi(), joukkue);
-//                i++;
-//            }
-//        } catch (SailoException ex) {
-//            Dialogs.showMessageDialog("Jäsenen hakemisessa ongelmia! " + ex.getMessage());
-//        }
-//        chooserJoukkueet.setSelectedIndex(index);
     }
     
     private void naytaVirhe(String virhe) {
@@ -302,6 +310,12 @@ public class JoukkueetController implements Initializable{
     private void alusta() {       
         chooserJoukkueet.clear();
         chooserJoukkueet.addSelectionListener(e -> naytaJoukkue());  
+        
+        cbKentat.clear(); 
+        for (int k = apujoukkue.ekaKentta(); k < apujoukkue.getKenttia(); k++) 
+            cbKentat.add(apujoukkue.getKysymys(k), null); 
+        cbKentat.getSelectionModel().select(0); 
+
         
 //        edits = KilpailuTietue.luoKentat(gridTietue, new Kilpailu());  
 //        for (TextField edit: edits)  
@@ -491,6 +505,16 @@ public class JoukkueetController implements Initializable{
             Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + e.getMessage());
             return e.getMessage();
         }
+    }
+    
+    /**
+     * Käsittelee yhteydenoton asiakkaaseen
+     * @param asiakas johon halutaan ottaa yhteyttä
+     */
+    private void asiakkaaseenYhteys() {        
+        Alert alert = new Alert(AlertType.INFORMATION, "emilia.rantonen@gmail.com", ButtonType.OK);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.show();
     }
     
     

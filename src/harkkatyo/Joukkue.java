@@ -1,6 +1,7 @@
 package harkkatyo;
 
 import java.io.*;
+import java.util.Comparator;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -177,7 +178,9 @@ public class Joukkue implements Cloneable, Tietue{
     public String getKysymys(int k) {
         switch ( k ) {
         case 0: return "Id nro";
-        case 1: return "Joukkueen nimi";
+        case 1: return "Nimi";
+        case 2: return "a-ö";
+        case 3: return "ö-a";
         default: return "Olet ihana";
         }
     }
@@ -208,6 +211,34 @@ public class Joukkue implements Cloneable, Tietue{
             return "Olet ihana";
         }
     }
+    
+    public static class Vertailija implements Comparator<Joukkue> {
+        private int k;
+        
+        @SuppressWarnings("javadoc")
+        public Vertailija(int k) {
+            this.k=k;
+        }
+
+        @Override
+        public int compare(Joukkue joukkue1, Joukkue joukkue2) {
+            return joukkue1.getAvain(k).compareToIgnoreCase(joukkue2.getAvain(k));
+        }
+    }
+    
+    /** 
+     * Antaa k:n kentän sisällön merkkijonona 
+      * @param k monenenko kentän sisältö palautetaan 
+      * @return kentän sisältö merkkijonona 
+      */ 
+     public String getAvain(int k) { 
+         switch ( k ) { 
+         case 0: return "" + idNro; 
+         case 1: return "" + joukkueenNimi.toUpperCase(); 
+  
+         default: return "Äääliö"; 
+         } 
+     } 
     
     /**
      * Testiohjelma joukkueelle.

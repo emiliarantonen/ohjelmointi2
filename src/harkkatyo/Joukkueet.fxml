@@ -40,7 +40,7 @@
                      </VBox.margin>
                   </Label>
                   <ComboBoxChooser fx:id="cbKentat" maxWidth="200.0" onAction="#handleHakuehto" rivit="nimi&#10;a-ö&#10;ö-a&#10;&#10;" />
-                  <TextField fx:id="hakuehto" />
+                  <TextField fx:id="hakuehto" onKeyPressed="#handleHakuehto" />
                   <Label text="Joukkueet">
                      <VBox.margin>
                         <Insets left="70.0" />
@@ -59,6 +59,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Hae" />
                   <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
               <MenuItem mnemonicParsing="false" onAction="#handleTulosta" text="Tulosta" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleSposti" text="Sähköposti" />
                   <MenuItem mnemonicParsing="false" onAction="#handleLopeta" text="Lopeta" />
             </items>
           </Menu>
