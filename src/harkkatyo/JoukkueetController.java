@@ -51,7 +51,7 @@ public class JoukkueetController implements Initializable{
     @FXML private TextField textJoukkueenNimi;
     @FXML private TextArea tulostusAlue;
     
-    private String joukkueenNimi = "Lumo";
+    //private String joukkueenNimi = "Lumo";
 
     @FXML
     private void handleLisaaJoukkue() {
@@ -77,7 +77,10 @@ public class JoukkueetController implements Initializable{
     
     @FXML
     void handleHakuehto() {
-        Dialogs.showMessageDialog("Ei osaa vielä poistaa");
+        //Dialogs.showMessageDialog("Ei osaa vielä poistaa");
+        if ( joukkueKohdalla != null )
+            hae(joukkueKohdalla.getIdNro());
+
     }
     
     @Override
@@ -157,6 +160,8 @@ public class JoukkueetController implements Initializable{
     private static Kilpailu apukilpailu = new Kilpailu();
     private static Joukkue apujoukkue = new Joukkue();
     int kentta=0;
+    
+    private String joukkueenNimi = "Lumo";
     
     private void apua() {
         Desktop desktop = Desktop.getDesktop();
@@ -442,16 +447,22 @@ public class JoukkueetController implements Initializable{
     
     /**
      * @param nimi -
+     * @return null jos onnistuu muuten virhe tekstinä
      */
-    protected void lueTiedosto(String nimi) {
-        joukkueenNimi = nimi;
+    protected String lueTiedosto(String nimi) {
+        joukkueenNimi = "Lumo/joukkueet";
         setTitle("Joukkue - " + joukkueenNimi);
         
         try {
-            rekisteri.lueTiedostosta(nimi);
+            rekisteri.lueTiedostosta(joukkueenNimi);
             hae(0);
+            return null;
         } catch (SailoException e) {
-            Dialogs.showMessageDialog(e.getMessage());
+            hae(0);
+            String virhe = e.getMessage(); 
+            if ( virhe != null ) Dialogs.showMessageDialog(virhe);
+            return virhe;
+
         }
         
     }
@@ -468,11 +479,17 @@ public class JoukkueetController implements Initializable{
         return true;
     }
     
-    private void tallenna() {
+    /**
+     * Tietojen tallennus
+     * @return null jos onnistuu, muuten virhe tekstinä
+     */
+    private String tallenna() {
         try {
             rekisteri.tallenna();
+            return null;
         }catch (SailoException e) {
-            Dialogs.showMessageDialog(e.getMessage());
+            Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + e.getMessage());
+            return e.getMessage();
         }
     }
     

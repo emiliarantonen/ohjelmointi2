@@ -14,7 +14,7 @@ public class Rekisteri {
     private Joukkueet joukkueet = new Joukkueet();
     private Kilpailut kilpailut = new Kilpailut();
     
-    private String hakemisto="Lumo";
+    //private String hakemisto="Lumo";
 
    
     /**
@@ -110,6 +110,20 @@ public class Rekisteri {
         return kilpailut.annaKilpailut(joukkue.getIdNro());
     }
     
+    /**
+     * Asettaa tiedostojen perusnimet
+     * @param nimi uusi nimi
+     */
+    public void setTiedosto(String nimi) {
+        File dir = new File(nimi);
+        dir.mkdirs();
+        String hakemistonNimi = "";
+        if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
+        joukkueet.setTiedostonPerusNimi(hakemistonNimi + "joukkueet");
+        kilpailut.setTiedostonPerusNimi(hakemistonNimi + "kilpailut");
+    }
+
+    
    
     /**
      * Lukee joukkueen tiedot tiedostosta
@@ -145,14 +159,13 @@ public class Rekisteri {
      * </pre>
      */
     public void lueTiedostosta(String nimi) throws SailoException{
-        File dir = new File(nimi);
-        dir.mkdir();
-        joukkueet = new Joukkueet();
+        joukkueet = new Joukkueet(); // jos luetaan olemassa olevaan niin helpoin tyhjentää näin
         kilpailut = new Kilpailut();
-        
-        hakemisto=nimi;
+
+        setTiedosto(nimi);
+
         joukkueet.lueTiedostosta(nimi);
-        kilpailut.lueTiedostosta(nimi);
+        kilpailut.lueTiedostosta("Lumo");
     }
     
     
@@ -162,13 +175,13 @@ public class Rekisteri {
     public void tallenna() throws SailoException {
         String virhe = "";
         try {
-            joukkueet.tallenna(hakemisto);            
+            joukkueet.tallenna();            
         } catch (SailoException ex) {
             virhe = ex.getMessage();
         }
         
         try {
-            kilpailut.tallenna(hakemisto);
+            kilpailut.tallenna();
         } catch (SailoException ex) {
             virhe += ex.getMessage();
         }
@@ -187,7 +200,7 @@ public class Rekisteri {
         Rekisteri rekisteri = new Rekisteri();
         
         try {
-            rekisteri.lueTiedostosta("koerekisteri");
+            rekisteri.lueTiedostosta("joukkueet");
         } catch (SailoException ex) {
             System.out.println(ex.getMessage());
         }

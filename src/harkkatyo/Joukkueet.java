@@ -83,7 +83,7 @@ public class Joukkueet implements Iterable<Joukkue>{
 
     /**
      * Lukee jäsenistön tiedostosta. 
-     * @param hakemisto tiedoston perusnimi
+     * @param tied tiedoston perusnimi
      * @throws SailoException jos lukeminen epäonnistuu
      * 
      * @example
@@ -116,22 +116,61 @@ public class Joukkueet implements Iterable<Joukkue>{
      *  dir.delete() === false;
      * </pre>
      */
-    public void lueTiedostosta(String hakemisto) throws SailoException {
-        String tiedostonNimi =hakemisto + "/joukkueet.dat";
-        File ftied = new File(tiedostonNimi);
-        
-        try (Scanner fi = new Scanner(new FileInputStream(ftied))){
-            while ( fi.hasNext()) {
-                String s = fi.nextLine();
-                if (s==null || "".equals(s) || s.charAt(0)==';') continue;
-                Joukkue joukkue = new Joukkue();
-                joukkue.parse(s);
-                lisaa(joukkue);
+    public void lueTiedostosta(String tied) throws SailoException {
+            setTiedostonPerusNimi(tied);
+            try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
+                tiedostonNimi = fi.readLine();
+                if ( tiedostonNimi == null ) throw new SailoException("Joukkueen nimi puuttuu");
+                String rivi = fi.readLine();
+                if ( rivi == null ) throw new SailoException("Maksimikoko puuttuu");
+                // int maxKoko = Mjonot.erotaInt(rivi,10); // tehdään jotakin
+
+                while ( (rivi = fi.readLine()) != null ) {
+                    rivi = rivi.trim();
+                    if ( "".equals(rivi) || rivi.charAt(0) == ';' ) continue;
+                    Joukkue joukkue = new Joukkue();
+                    joukkue.parse(rivi); // voisi olla virhekäsittely
+                    lisaa(joukkue);
+                }
+                muutettu = false;
+            } catch ( FileNotFoundException e ) {
+                throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
+            } catch ( IOException e ) {
+                throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
             }
-        } catch (FileNotFoundException e) {
-            throw new SailoException("Ei saa luettua tiedostoa " + tiedostonNimi);
-        }
+
+//        String tiedostonNimi =hakemisto + "/joukkueet.dat";
+//        File ftied = new File(tiedostonNimi);
+//        
+//        try (Scanner fi = new Scanner(new FileInputStream(ftied))){
+//            while ( fi.hasNext()) {
+//                String s = fi.nextLine();
+//                if (s==null || "".equals(s) || s.charAt(0)==';') continue;
+//                Joukkue joukkue = new Joukkue();
+//                joukkue.parse(s);
+//                lisaa(joukkue);
+//            }
+//        } catch (FileNotFoundException e) {
+//            throw new SailoException("Ei saa luettua tiedostoa " + tiedostonNimi);
+//        }
     }
+    
+    
+    /**
+     * Tallentaa jäsenistön tiedostoon.  Kesken.
+     * Luetaan aikaisemmin annetun nimisestä tiedostosta
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void lueTiedostosta() throws SailoException {
+        lueTiedostosta(getTiedostonPerusNimi());
+    }
+
+    public void setTiedostonPerusNimi(String nimi) {
+        tiedostonPerusNimi= nimi;
+        
+    }
+
+
 
     /**
      * Luokka joukkueiden iteroimiseksi.
@@ -223,10 +262,9 @@ public class Joukkueet implements Iterable<Joukkue>{
     
     /**
      * Tallentaa joukkueet tiedostoon
-     * @param hakemisto -
      * @throws SailoException -
      */
-    public void tallenna(String hakemisto) throws SailoException {
+    public void tallenna() throws SailoException {
         
 //        File ftied = new File(hakemisto + "/kilpailut.dat");
 //        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))){
@@ -346,12 +384,7 @@ public class Joukkueet implements Iterable<Joukkue>{
             joukkue.tulosta(System.out);
         }
         
-        try{
-            joukkueet.tallenna("rekisteri");
-        } catch (SailoException e) {
-            //e.printStackTrace();
-            System.err.println(e.getMessage());
-        }
+        
     }
 
 

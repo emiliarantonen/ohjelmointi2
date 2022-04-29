@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -18,6 +21,7 @@ public class Kilpailut implements Iterable<Kilpailu> {
     //private Kilpailu alkiot[]=new Kilpailu[100];
     private int lkm=0;
     private boolean muutettu=false;
+    private String tiedostonPerusNimi = "";
     
     /**
      * @param kil lisättävä kilpailu
@@ -56,19 +60,58 @@ public class Kilpailut implements Iterable<Kilpailu> {
     }
     
     /**
-     * @param hakemisto -
      * @throws SailoException -
      */
-    public void tallenna(String hakemisto) throws SailoException {
-        File ftied = new File(hakemisto + "/kilpailut.dat");
-        try (PrintStream fo = new PrintStream(new FileOutputStream(ftied, false))){
-            for (Kilpailu kil: alkiot) {
-                  fo.println(kil.toString());
+    public void tallenna() throws SailoException {
+        if ( !muutettu ) return;
+
+        File fbak = new File(getBakNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete(); //  if ... System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbak); //  if ... System.err.println("Ei voi nimetä");
+
+        try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
+            for (Kilpailu kil : this) {
+                fo.println(kil.toString());
             }
-        } catch (FileNotFoundException ex ) {
-            throw new SailoException("Tiedosto "+ ftied.getAbsolutePath()+ " ei aukea");
+        } catch ( FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto " + ftied.getName() + " ei aukea");
+        } catch ( IOException ex ) {
+            throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
         }
+
+        muutettu = false;
+
     }
+ 
+
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+
+
+    /**
+     * Palauttaa tiedoston nimen, jota käytetään tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return tiedostonPerusNimi + ".dat";
+    }
+
+
+    /**
+     * Palauttaa varakopiotiedoston nimen
+     * @return varakopiotiedoston nimi
+     */
+    public String getBakNimi() {
+        return tiedostonPerusNimi + ".bak";
+    }
+
+
     
     
     /**
@@ -99,7 +142,7 @@ public class Kilpailut implements Iterable<Kilpailu> {
      * </pre>
      */
     public void lueTiedostosta(String hakemisto) throws SailoException {
-        String tiedostonNimi = hakemisto + "/kilpailut.dat";
+        String tiedostonNimi = hakemisto + "/joukkueet/kilpailut.dat";
         File ftied = new File(tiedostonNimi);
         
         try (Scanner fi = new Scanner(new FileInputStream(ftied))){
@@ -188,17 +231,17 @@ public class Kilpailut implements Iterable<Kilpailu> {
             kil.tulosta(System.out);
         }
         
-        try {
-            kilpailut.tallenna("rekisteri");
-            
-        } catch (SailoException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
     public Iterator<Kilpailu> iterator() {
         return alkiot.iterator();
+    }
+
+    public void setTiedostonPerusNimi(String tied) {
+        tiedostonPerusNimi = tied;
+        
     }
 
 }

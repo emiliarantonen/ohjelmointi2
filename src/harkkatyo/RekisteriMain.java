@@ -37,9 +37,14 @@ public class RekisteriMain extends Application {
             rekisteriCtrl.setRekisteri(rekisteri);
             
             primaryStage.show();
-            if(!rekisteriCtrl.avaa()) Platform.exit();
+            //if(!rekisteriCtrl.avaa()) Platform.exit();
             
-           
+            Application.Parameters params = getParameters(); 
+            if ( params.getRaw().size() > 0 ) 
+                rekisteriCtrl.lueTiedosto(params.getRaw().get(0));  
+            else
+                if ( !rekisteriCtrl.avaa() ) Platform.exit();
+
             
             
         } catch(Exception e) {
